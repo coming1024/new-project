@@ -12,7 +12,11 @@ hero* hero::create(SpriteFrameCache* cache, char* s)
 	CC_SAFE_DELETE(player);
 	return NULL;
 }
-bool hero::attack(Touch* pTouch, Event* pEvent)
+bool hero::commonAttack(Touch* pTouch, Event* pEvent)
+{
+	return true;
+}
+bool hero::stopcommonAttack(Touch* pTouch, Event* pEvent)
 {
 	return true;
 }
@@ -22,6 +26,25 @@ bool hero::heroMove(EventKeyboard::KeyCode keycode, Event* event)
 }
 bool hero::heroStopMove(EventKeyboard::KeyCode keycode, Event* event)
 {
+	return true;
+}
+bool hero::swithWeapon(EventKeyboard::KeyCode keycode, Event* event)
+{
+	if (keycode == EventKeyboard::KeyCode::KEY_J)
+	{
+		auto fadeout = FadeOut::create(0.2f);
+		auto fadein = FadeIn::create(0.2f);
+		nowEquipment->runAction(fadeout);
+		if (nowEquipment == equipmentOne)
+		{
+			nowEquipment = equipmentTwo;
+		}
+		else
+		{
+			nowEquipment = equipmentOne;
+		}
+		nowEquipment->runAction(fadein);
+	}
 	return true;
 }
 bool hero::take_buff(Buff* buff)
