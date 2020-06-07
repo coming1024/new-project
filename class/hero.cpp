@@ -47,6 +47,10 @@ bool hero::swithWeapon(EventKeyboard::KeyCode keycode, Event* event)
 	}
 	return true;
 }
+bool hero::getWeapon(EventKeyboard::KeyCode keycode, Event* event)
+{
+	return true;
+}
 bool hero::take_buff(Buff* buff)
 {
 	return true;
@@ -55,9 +59,48 @@ bool hero::clear_buff()
 {
 	return true;
 }
-void hero::take_damage()
-{}
-void hero::die_animation()
-{}
-void hero::die()
-{}
+void hero::takeDamage(int num)
+{
+	this->_lifeNum -= num;
+}
+void hero::setDeath(bool isDied)
+{
+	_isDied = isDied;
+}
+bool hero::getDeath()
+{
+	return _isDied;
+}
+int hero::getLifeNum()
+{
+	return this->_lifeNum;
+}
+bool hero::setLifeNum(int num)
+{
+	this->_lifeNum = num;
+	return true;
+}
+void hero::setLeftOrRight(bool orient)
+{
+	this->_leftOrRight = orient;
+}
+bool hero::getLeftOrRight()
+{
+	return _leftOrRight;
+}
+void hero::setIsUsingWeapon(bool isUsingWeapon)
+{
+	this->_isUsingWeapon = isUsingWeapon;
+}
+bool hero::getIsUsingWeapon()
+{
+	return this->_isUsingWeapon;
+}
+void hero::setDefence(int defence)
+{
+	this->_defence = defence;
+}
+int hero::getDefence()
+{
+	return _defence;
+}
