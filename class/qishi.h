@@ -2,6 +2,7 @@
 #ifndef __qishi_h__
 #define __qishi_h__
 #include<iostream>
+#include"math.h"
 #include"cocos2d.h"
 #include<vector>
 #include"buff.h"
@@ -18,12 +19,11 @@ public:
 	
 	virtual bool commonAttack(Touch* pTouch, Event* pEvent);
 	virtual bool stopcommonAttack(Touch* tTouch, Event* eEvent);
+
 	virtual bool take_buff(Buff* buff);
 	virtual bool clear_buff();
-	virtual void die();
-	virtual void take_damage();
-	virtual void die_animation();
 	void setfalse();
+	CCArray* _pt_bullets;
 };
 #endif
 

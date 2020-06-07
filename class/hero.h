@@ -15,26 +15,42 @@ public:
 	virtual bool heroMove(EventKeyboard::KeyCode keycode, Event* event);
 	virtual bool heroStopMove(EventKeyboard::KeyCode keycode, Event* event);
 	virtual bool swithWeapon(EventKeyboard::KeyCode keycode, Event* event);
+	virtual bool getWeapon(EventKeyboard::KeyCode keycode, Event* event);
 	virtual bool commonAttack(Touch* pTouch, Event* pEvent);
 	virtual bool stopcommonAttack(Touch* pTouch, Event* pEvent);
 	virtual bool take_buff(Buff* buff);
 	virtual bool clear_buff();
-	virtual void die();
-	virtual void take_damage();
-	virtual void die_animation();
+
+	virtual int getLifeNum();
+	virtual bool setLifeNum(int);
+
+	virtual void setDeath(bool);
+	virtual bool getDeath();
+
+	virtual void setLeftOrRight(bool);
+	virtual bool getLeftOrRight();
+
+	virtual void setIsUsingWeapon(bool);
+	virtual bool getIsUsingWeapon();
+
+	virtual void setDefence(int);
+	virtual int getDefence();
+
+	virtual void takeDamage(int);
+
 	equipment* equipmentOne;
 	equipment* equipmentTwo;
 	equipment* nowEquipment;
 	bool _isMoveing;
-	std::vector<cocos2d::Sprite*> _pt_bullets;
-	unsigned int numBullet;
+	bool _isDied;
 protected:
-	int _life_num;
+	int _lifeNum;
 	int _commonATK;//¹¥»÷Á¦
 	int _defence;
 	Vector<Buff*> _allbuffs;
 	int type;
-	bool _isAttack;
+	bool _isUsingWeapon;
+	bool _leftOrRight;
 
 };
 #endif
