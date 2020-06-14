@@ -51,17 +51,9 @@ bool hero::getWeapon(EventKeyboard::KeyCode keycode, Event* event)
 {
 	return true;
 }
-bool hero::take_buff(Buff* buff)
-{
-	return true;
-}
-bool hero::clear_buff()
-{
-	return true;
-}
 void hero::takeDamage(int num)
 {
-	this->_lifeNum -= num;
+	this->_CurrentlifeNum -= num;
 }
 void hero::setDeath(bool isDied)
 {
@@ -71,14 +63,29 @@ bool hero::getDeath()
 {
 	return _isDied;
 }
-int hero::getLifeNum()
+int hero::getCurrentLifeNum()
 {
-	return this->_lifeNum;
+	return this->_CurrentlifeNum;
 }
-bool hero::setLifeNum(int num)
+void hero::setCurrentLifeNum(int num)
 {
-	this->_lifeNum = num;
-	return true;
+	this->_CurrentlifeNum = num;
+}
+void hero::addCurrentLifeNum(int num)
+{
+	this->_CurrentlifeNum += num;
+}
+int hero::getTotalLifeNum()
+{
+	return this->_totalLifeNum;
+}
+void hero::setTotalLifeNum(int num)
+{
+	this->_totalLifeNum = num;
+}
+void hero::addTotalLifeNum(int num)
+{
+	this->_totalLifeNum += num;
 }
 void hero::setLeftOrRight(bool orient)
 {
@@ -103,4 +110,20 @@ void hero::setDefence(int defence)
 int hero::getDefence()
 {
 	return _defence;
+}
+void hero::addDefence(int num)
+{
+	this->_defence += num;
+}
+void hero::setATK(int commonATK)
+{
+	this->_commonATK = commonATK;
+}
+int hero::getATK()
+{
+	return this->_commonATK;
+}
+ProgressTimer* hero::getBloodProgress()
+{
+	return this->bloodProgress;
 }

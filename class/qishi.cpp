@@ -5,11 +5,14 @@ qishi* qishi::create(SpriteFrameCache* cache, char* s)
     Size visibleSize = Director::sharedDirector()->getVisibleSize();
     if (player && player->initWithSpriteFrame(cache->spriteFrameByName(s)))
     {
+        player->setWalkFalse();
         player->_leftOrRight = 0;
-        player->setLifeNum(5);
+        player->setCurrentLifeNum(10);
+        player->setTotalLifeNum(10);
         player->setDeath(false);
+        player->setDefence(2);
         //普攻
-        player->_commonATK = 2;
+        player->setATK(2);
         auto equipmentCache = SpriteFrameCache::sharedSpriteFrameCache();
         equipmentCache->addSpriteFramesWithFile("weapon.plist");
         //子弹
@@ -25,12 +28,10 @@ qishi* qishi::create(SpriteFrameCache* cache, char* s)
             framejzxfw = equipmentCache->getSpriteFrameByName(String::createWithFormat("jzxfw%d.png", i)->getCString());
             vector_frame_jzxfw.pushBack(framejzxfw);
         }
-
+        //初始装备设置
         player->equipmentOne = equipment::create(2, 3, 1,0, equipmentCache, "gjz.png", bullet);
-        player->equipmentTwo = equipment::create(3, 3, 0,0, equipmentCache, "jzxfw0.png", vector_frame_jzxfw,25,player->getContentSize().height);
-
+        player->equipmentTwo = equipment::create(3, 5, 0,0, equipmentCache, "jzxfw0.png", vector_frame_jzxfw,25,player->getContentSize().height);
         player->nowEquipment = player->equipmentOne;
-
         if (player->equipmentOne->getParent() == nullptr)
         {
             player->addChild(player->equipmentOne, 2);
@@ -39,9 +40,20 @@ qishi* qishi::create(SpriteFrameCache* cache, char* s)
         {
             player->addChild(player->equipmentTwo, 2);
         }
-
         auto fadeout = FadeOut::create(0.01f);
         player->equipmentTwo->runAction(fadeout);
+        //血条设置
+        player->spriteBar = Sprite::create("bar.png");
+        player->addChild(player->spriteBar);
+        player->spriteBar->setPosition(player->getPosition().x+ player->getContentSize().width/2, player->getContentSize().height);
+        player->spriteBlood = Sprite::create("blood.png");
+        player->bloodProgress = ProgressTimer::create(player->spriteBlood);
+        player->bloodProgress->setType(ProgressTimer::Type::BAR);
+        player->bloodProgress->setPosition(player->getPosition().x + player->getContentSize().width / 2, player->getContentSize().height);
+        player->bloodProgress->setMidpoint(Point(0, 0.5));
+        player->bloodProgress->setBarChangeRate(Point(1, 0));
+        player->addChild(player->bloodProgress);
+
 
         player->autorelease();
         return player;
@@ -138,10 +150,10 @@ bool qishi::commonAttack(Touch* tTouch, Event* eEvent)
     //近战
     if (nowEquipment->getType() == 0)
     {
+        //关键在于设置 在攻击
         this->setIsUsingWeapon(true);
-        nowEquipment->setTag(0);
         auto jz_animation = Animation::createWithSpriteFrames(this->nowEquipment->vector_frame);
-        jz_animation->setDelayPerUnit(0.2f);
+        jz_animation->setDelayPerUnit(float(1)/float(nowEquipment->getSpeed()));
         jz_animation->setLoops(-1);
         auto animate = Animate::create(jz_animation);
         nowEquipment->runAction(animate);
@@ -206,16 +218,7 @@ bool qishi::stopcommonAttack(Touch* tTouch, Event* eEvent)
     }
     return true;
 }
-
-bool qishi::take_buff(Buff* buff)
-{
-    return true;
-}
-bool qishi::clear_buff()
-{
-    return true;
-}
-void qishi::setfalse()
+void qishi::setWalkFalse()
 {
     _isMoveing = false;
 }

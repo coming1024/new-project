@@ -4,7 +4,6 @@
 #include<iostream>
 #include"cocos2d.h"
 #include<vector>
-#include"buff.h"
 #include"equipment.h"
 USING_NS_CC;
 class hero :public cocos2d::Sprite
@@ -18,11 +17,12 @@ public:
 	virtual bool getWeapon(EventKeyboard::KeyCode keycode, Event* event);
 	virtual bool commonAttack(Touch* pTouch, Event* pEvent);
 	virtual bool stopcommonAttack(Touch* pTouch, Event* pEvent);
-	virtual bool take_buff(Buff* buff);
-	virtual bool clear_buff();
-
-	virtual int getLifeNum();
-	virtual bool setLifeNum(int);
+	virtual int getCurrentLifeNum();
+	virtual void setCurrentLifeNum(int);
+	virtual void addCurrentLifeNum(int);
+	virtual int getTotalLifeNum();
+	virtual void setTotalLifeNum(int);
+	virtual void addTotalLifeNum(int);
 
 	virtual void setDeath(bool);
 	virtual bool getDeath();
@@ -35,8 +35,15 @@ public:
 
 	virtual void setDefence(int);
 	virtual int getDefence();
+	virtual void addDefence(int);
+
+	virtual void setATK(int);
+	virtual int getATK();
 
 	virtual void takeDamage(int);
+
+	virtual ProgressTimer* getBloodProgress();
+
 
 	equipment* equipmentOne;
 	equipment* equipmentTwo;
@@ -44,13 +51,16 @@ public:
 	bool _isMoveing;
 	bool _isDied;
 protected:
-	int _lifeNum;
+	int _CurrentlifeNum;
+	int _totalLifeNum;
 	int _commonATK;//¹¥»÷Á¦
 	int _defence;
-	Vector<Buff*> _allbuffs;
 	int type;
 	bool _isUsingWeapon;
 	bool _leftOrRight;
+	Sprite* spriteBar;
+	Sprite* spriteBlood;
+	ProgressTimer* bloodProgress;
 
 };
 #endif
