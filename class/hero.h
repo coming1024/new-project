@@ -23,6 +23,7 @@ public:
 	virtual int getTotalLifeNum();
 	virtual void setTotalLifeNum(int);
 	virtual void addTotalLifeNum(int);
+	virtual void reduceCurrentLifeNum(int);
 
 	virtual void setDeath(bool);
 	virtual bool getDeath();
@@ -33,17 +34,29 @@ public:
 	virtual void setIsUsingWeapon(bool);
 	virtual bool getIsUsingWeapon();
 
-	virtual void setDefence(int);
-	virtual int getDefence();
-	virtual void addDefence(int);
+	virtual void setCurrentDefence(int);
+	virtual int getCurrentDefence();
+	virtual void addCurrentDefence(int);
+	virtual int getTotalDefence();
+	virtual void setTotalDefence(int);
+	virtual void reduceCurrentDefence(int);
+
 
 	virtual void setATK(int);
 	virtual int getATK();
 
+	virtual int getCurrentEnergy();
+	virtual void setCurrentEnergy(int);
+	virtual void addCurrentEnergy(int);
+	virtual int getTotalEnergy();
+	virtual void setTotalEnergy(int);
+	virtual void reduceCurrentEnergy(int);
+
 	virtual void takeDamage(int);
 
 	virtual ProgressTimer* getBloodProgress();
-
+	virtual ProgressTimer* getEnergyProgress();
+	virtual ProgressTimer* getDefenceProgress();
 
 	equipment* equipmentOne;
 	equipment* equipmentTwo;
@@ -54,13 +67,22 @@ protected:
 	int _CurrentlifeNum;
 	int _totalLifeNum;
 	int _commonATK;//¹¥»÷Á¦
-	int _defence;
+	int _currentDefence;
+	int _totalDefence;
+	int _currentEnergy;
+	int _totalEnergy;
 	int type;
 	bool _isUsingWeapon;
 	bool _leftOrRight;
-	Sprite* spriteBar;
+	Sprite* spriteBar1;
+	Sprite* spriteBar2;
+	Sprite* spriteBar3;
 	Sprite* spriteBlood;
+	Sprite* spriteEnergy;
+	Sprite* spriteDefence;
 	ProgressTimer* bloodProgress;
+	ProgressTimer* energyProgress;
+	ProgressTimer* defenceProgress;
 
 };
 #endif

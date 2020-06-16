@@ -7,10 +7,13 @@ qishi* qishi::create(SpriteFrameCache* cache, char* s)
     {
         player->setWalkFalse();
         player->_leftOrRight = 0;
-        player->setCurrentLifeNum(10);
-        player->setTotalLifeNum(10);
+        player->setCurrentLifeNum(6);
+        player->setTotalLifeNum(6);
+        player->setCurrentEnergy(10);
+        player->setTotalEnergy(10);
         player->setDeath(false);
-        player->setDefence(2);
+        player->setCurrentDefence(6);
+        player->setTotalDefence(6);
         //ÆÕ¹¥
         player->setATK(2);
         auto equipmentCache = SpriteFrameCache::sharedSpriteFrameCache();
@@ -43,17 +46,38 @@ qishi* qishi::create(SpriteFrameCache* cache, char* s)
         auto fadeout = FadeOut::create(0.01f);
         player->equipmentTwo->runAction(fadeout);
         //ÑªÌõÉèÖÃ
-        player->spriteBar = Sprite::create("bar.png");
-        player->addChild(player->spriteBar);
-        player->spriteBar->setPosition(player->getPosition().x+ player->getContentSize().width/2, player->getContentSize().height);
+        player->spriteBar1 = Sprite::create("bar.png");
+        player->addChild(player->spriteBar1);
+        player->spriteBar1->setPosition(player->getPosition().x + player->getContentSize().width / 2, player->getContentSize().height + 16);
         player->spriteBlood = Sprite::create("blood.png");
         player->bloodProgress = ProgressTimer::create(player->spriteBlood);
         player->bloodProgress->setType(ProgressTimer::Type::BAR);
-        player->bloodProgress->setPosition(player->getPosition().x + player->getContentSize().width / 2, player->getContentSize().height);
+        player->bloodProgress->setPosition(player->getPosition().x + player->getContentSize().width / 2, player->getContentSize().height + 16);
         player->bloodProgress->setMidpoint(Point(0, 0.5));
         player->bloodProgress->setBarChangeRate(Point(1, 0));
         player->addChild(player->bloodProgress);
-
+        //À¶ÌõÉèÖÃ
+        player->spriteBar2 = Sprite::create("bar.png");
+        player->addChild(player->spriteBar2);
+        player->spriteBar2->setPosition(player->getPosition().x + player->getContentSize().width / 2 , player->getContentSize().height+8);
+        player->spriteEnergy = Sprite::create("energy.png");
+        player->energyProgress = ProgressTimer::create(player->spriteEnergy);
+        player->energyProgress->setType(ProgressTimer::Type::BAR);
+        player->energyProgress->setPosition(player->getPosition().x + player->getContentSize().width / 2 , player->getContentSize().height+8);
+        player->energyProgress->setMidpoint(Point(0, 0.5));
+        player->energyProgress->setBarChangeRate(Point(1, 0));
+        player->addChild(player->energyProgress);
+        //·ÀÓùÌõÉèÖÃ
+        player->spriteBar3 = Sprite::create("bar.png");
+        player->addChild(player->spriteBar3);
+        player->spriteBar3->setPosition(player->getPosition().x + player->getContentSize().width / 2, player->getContentSize().height);
+        player->spriteDefence = Sprite::create("defence.png");
+        player->defenceProgress = ProgressTimer::create(player->spriteDefence);
+        player->defenceProgress->setType(ProgressTimer::Type::BAR);
+        player->defenceProgress->setPosition(player->getPosition().x + player->getContentSize().width / 2, player->getContentSize().height);
+        player->defenceProgress->setMidpoint(Point(0, 0.5));
+        player->defenceProgress->setBarChangeRate(Point(1, 0));
+        player->addChild(player->defenceProgress);
 
         player->autorelease();
         return player;
@@ -159,8 +183,9 @@ bool qishi::commonAttack(Touch* tTouch, Event* eEvent)
         nowEquipment->runAction(animate);
     }
     //Ô¶³Ì¹¥»÷
-    if (nowEquipment->getType() == 1)
+    if (nowEquipment->getType() == 1&&this->getCurrentEnergy()>=0)
     {
+        this->reduceCurrentEnergy(1);
         auto visibleSize = Director::getInstance()->getVisibleSize();
         auto touchLocation = tTouch->getLocationInView();
         touchLocation = Director::getInstance()->convertToGL(touchLocation);
