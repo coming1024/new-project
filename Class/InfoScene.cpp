@@ -1,15 +1,27 @@
 #include "cocos-ext.h"
-#include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
 #include "InfoScene.h"
+
+#include "HomeScene.h"
 
 USING_NS_CC;
 USING_NS_CC_EXT;
 using namespace CocosDenshion;
 
+InfoScene::InfoScene()
+{
+    //游戏界面大小设定值
+    this->VisibleSize = ParentScene::GetVisibleSize();
+    this->Origin = ParentScene::GetOrigin();
+}
+InfoScene::~InfoScene() {};
+
 Scene* InfoScene::createScene()
 {
-	return InfoScene::create();
+    auto infoLayer = Layer::create();
+    auto scene = InfoScene::create();
+    scene->addChild(infoLayer);
+    return scene;
 }
 
 static void problemLoading(const char* filename)
@@ -25,9 +37,6 @@ bool InfoScene::init()
         return false;
     }
 
-    auto visibleSize = Director::getInstance()->getVisibleSize();//x=1024 y=768
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();//origin的x,y值都为0
-
     //背景
     auto InfoBackGround = Sprite::create("EntryScene1.png");
     if (InfoBackGround == nullptr)
@@ -36,11 +45,11 @@ bool InfoScene::init()
     }
     else
     {
-        InfoBackGround->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
-        this->addChild(InfoBackGround);
+        InfoBackGround->setPosition(Vec2(VisibleSize.width / 2, VisibleSize.height / 2));
+        this->addChild(InfoBackGround,0);
     }
 
-    //信息
+    //信息界面
     auto Infomation = Sprite::create("AttackInformation.png");
     if (InfoBackGround == nullptr)
     {
@@ -48,13 +57,14 @@ bool InfoScene::init()
     }
     else
     {
-        Infomation->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
-        this->addChild(Infomation);
+        Infomation->setPosition(Vec2(VisibleSize.width / 2, VisibleSize.height / 2));
+        this->addChild(Infomation,1);
     }
-    //////////////////////////////////////
+
+    //返回键
     auto closeItem = MenuItemImage::create("returnNormal.png",
         "returnSelected.png",
-        CC_CALLBACK_1(InfoScene::backtoHelloWorld, this));
+        CC_CALLBACK_1(InfoScene::BackToLastScene, this));
     if (closeItem == nullptr ||
         closeItem->getContentSize().width <= 0 ||
         closeItem->getContentSize().height <= 0)
@@ -63,15 +73,16 @@ bool InfoScene::init()
     }
     else
     {
-        closeItem->setPosition(Vec2(0.8*visibleSize.width, 0.8*visibleSize.height));
+        closeItem->setPosition(Vec2(0.9*VisibleSize.width, 0.9*VisibleSize.height));
     }
-
+    //菜单项
     auto menu = Menu::create(closeItem, NULL);
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
 }
 
-void InfoScene::backtoHelloWorld(cocos2d::Ref* pSender)
+//返回键
+void InfoScene::BackToLastScene(cocos2d::Ref* pSender)
 {
     CCDirector::sharedDirector()->popScene();
 }

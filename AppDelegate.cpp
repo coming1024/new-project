@@ -1,9 +1,10 @@
 
 #include "AppDelegate.h"
-#include "HelloWorldScene.h"
+#include "HomeScene.h"
 #include "HerosHomeScene.h"
 #include "SettingScene.h"
 #include "InfoScene.h"
+#include "Key.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -99,29 +100,20 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     register_all_packages();
 
-    // create a scene. it's an autorelease object
-    auto entryScene = HelloWorld::createScene();
-    auto entryLayer = HelloWorld::create();
-    entryScene->addChild(entryLayer);
+    // 主界面
+    auto _HomeScene = HomeScene::createScene();
 
-    //
-    auto infoScene = InfoScene::createScene();
-    auto infoLayer = InfoScene::create();
-    infoScene->addChild(infoLayer);
+    //信息界面
+    auto _InfoScene = InfoScene::createScene();
 
-    //
-    auto settingScene = SettingScene::createScene();
-    auto settingLayer = SettingScene::create();
-    settingScene->addChild(settingLayer);
+    //设置界面
+    auto _SettingScene = SettingScene::createScene();
 
-
-    //
-    auto herosHome = HerosHome::createScene();
-    auto homeLayer = HerosHome::create();
-    herosHome->addChild(homeLayer);
+    //骑士之家界面
+    auto _HerosHome = HerosHome::createScene();
 
     // run
-    director->runWithScene(entryScene);
+    director->runWithScene(_HomeScene);
 
     return true;
 }
