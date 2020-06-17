@@ -3,7 +3,6 @@
 #include "HerosHomeScene.h"
 #include "HomeScene.h"
 #include "SettingScene.h"
-#include "Key.h"
 
 #include "cocos-ext.h"
 #include "SimpleAudioEngine.h"
@@ -68,7 +67,7 @@ void PauseLayer::GotoPauseScene(cocos2d::Ref* pSender)
     //返回主界面
     auto ReturnBTN = MenuItemImage::create("StopNormal.png",
         "StopSelected.png",
-        CC_CALLBACK_1(PauseLayer::BackToHomeScene, this));
+        CC_CALLBACK_1(PauseLayer::BackToHerosHome, this));
     //设置键
     auto SettingBTN = MenuItemImage::create("SetNormal.png",
         "SetSelected.png",
@@ -111,7 +110,13 @@ void PauseLayer::GoToSettingScene(cocos2d::Ref* pSender)
 
 
 //返回主界面
-void PauseLayer::BackToHomeScene(cocos2d::Ref* pSender)
+void PauseLayer::BackToHerosHome(cocos2d::Ref* pSender)
 {
-    Director::sharedDirector()->replaceScene(HomeScene::createScene());
+    Director::sharedDirector()->replaceScene(HerosHome::createScene());
+    if (BGMisPlay)
+    {
+        SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
+        SimpleAudioEngine::sharedEngine()->playBackgroundMusic("HerosHome.mp3", true);
+        SimpleAudioEngine::sharedEngine()->setBackgroundMusicVolume(BGMvolume);
+    }
 }

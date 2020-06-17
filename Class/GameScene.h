@@ -3,7 +3,6 @@
 #ifndef __GAMESCENE_H__//主界面
 #define __GAMESCENE_H__
 
-#include "ParentScene.h"
 #include "cocos2d.h"
 
 //英雄创建
@@ -13,7 +12,7 @@
 #include "hero.h"
 #include "Buff.h"
 
-class GameScene : public ParentScene
+class GameScene : public cocos2d::Scene
 {
 public:
     GameScene();
