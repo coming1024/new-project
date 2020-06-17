@@ -12,10 +12,19 @@ USING_NS_CC_EXT;
 using namespace CocosDenshion;
 HomeScene::HomeScene() 
 {
-    //游戏界面大小设定值
-    this->VisibleSize = ParentScene::GetVisibleSize();
-    this->Origin = ParentScene::GetOrigin();
-    this->BGM = "HomeSceneBGM.mp3";
+    //游戏界面设定
+    this->VisibleSize = Director::getInstance()->getVisibleSize();//x=1024 y=768
+    this->Origin = Director::getInstance()->getVisibleOrigin();//origin的x,y值都为0
+
+    //背景音乐
+    //this->BGM = "HomeSceneBGM.mp3";
+
+    //背景音乐音量
+    //this->BGMvolume = 0.5;
+
+    //背景音乐是否播放
+    //this->BGMisPlay = true;
+    
 }
 HomeScene::~HomeScene() {};
 
@@ -45,11 +54,11 @@ bool HomeScene::init()
     }
     //////////////////////////////////////////////////////
     //背景音乐设置
-    if (ParentScene::GetBGMisPlay())
+    if (BGMisPlay)
     {
         SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-        SimpleAudioEngine::sharedEngine()->playBackgroundMusic(this->BGM, true);
-        SimpleAudioEngine::sharedEngine()->setBackgroundMusicVolume(this->BGMvolume);
+        SimpleAudioEngine::sharedEngine()->playBackgroundMusic("HomeSceneBGM.mp3", true);
+        SimpleAudioEngine::sharedEngine()->setBackgroundMusicVolume(BGMvolume);
     }
 
     ///////////////////////////////////////////////////////
@@ -71,7 +80,7 @@ bool HomeScene::init()
     auto setBTN = MenuItemImage::create(
         "SetNormal.png",
         "SetSelected.png",
-        CC_CALLBACK_1(HomeScene::GoToSettingLayer, this));
+        CC_CALLBACK_1(HomeScene::GoToSettingScene, this));
 
     if (setBTN == nullptr ||
         setBTN->getContentSize().width <= 0 ||
@@ -144,18 +153,17 @@ void HomeScene::menuCloseCallback(cocos2d::Ref* pSender)
 void HomeScene::GoToHerosHome(cocos2d::Ref* pSender)
 {
     Director::sharedDirector()->replaceScene(HerosHome::createScene());
-    //关音乐
-    if (ParentScene::GetBGMisPlay())
+    //换音乐
+    if (BGMisPlay)
     {
-
         SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
         SimpleAudioEngine::sharedEngine()->playBackgroundMusic("HerosHome.mp3",true);
-        SimpleAudioEngine::sharedEngine()->setBackgroundMusicVolume(ParentScene::GetBGMvolume());
+        SimpleAudioEngine::sharedEngine()->setBackgroundMusicVolume(BGMvolume);
     }
 }
 
 //设置键
-void HomeScene::GoToSettingLayer(Ref* pSender)
+void HomeScene::GoToSettingScene(Ref* pSender)
 {
     //原来的场景变化
     /*
@@ -198,8 +206,8 @@ void HomeScene::GoToSettingLayer(Ref* pSender)
     Director::sharedDirector()->pushScene(SettingScene::createScene());
 }
 
+//进入信息界面
 void HomeScene::GoToInfo(Ref* pSender)
 {
     Director::sharedDirector()->pushScene(InfoScene::createScene());
 }
-
