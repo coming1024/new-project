@@ -1,7 +1,6 @@
 //场景创建
 #include "cocos-ext.h"
 #include "SimpleAudioEngine.h"
-#include "Key.h"
 
 #include "GameScene.h"
 #include "SettingScene.h"
@@ -16,7 +15,6 @@ using namespace CocosDenshion;
 
 GameScene::GameScene()
 {
-    this->BGM = "HerosHome.mp3";
 }
 GameScene::~GameScene() {};
 
@@ -43,18 +41,10 @@ bool GameScene::init()
         return false;
     }
 
-    auto _KeyLayer = Key::create();
-    this->addChild(_KeyLayer, 0);
 
     auto _PauseLayer = PauseLayer::create();
     this->addChild(_PauseLayer, 1);
 
-    //为啥没用
-    if (_KeyLayer->hero_qishi->_isDied)
-    {
-        auto GameOver = Label::createWithTTF("GameOver!", "fonts/Marker Felt.ttf", 24);
-        BackToHomeScene();
-    }
         
 }
 

@@ -10,9 +10,9 @@ using namespace CocosDenshion;
 
 InfoScene::InfoScene()
 {
-    //游戏界面大小设定值
-    this->VisibleSize = ParentScene::GetVisibleSize();
-    this->Origin = ParentScene::GetOrigin();
+    //游戏界面设定
+    this->VisibleSize = Director::getInstance()->getVisibleSize();//x=1024 y=768
+    this->Origin = Director::getInstance()->getVisibleOrigin();//origin的x,y值都为0
 }
 InfoScene::~InfoScene() {};
 

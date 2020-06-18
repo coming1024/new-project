@@ -3,10 +3,9 @@
 #ifndef __HOMESCENE_H__//主界面
 #define __HOMESCENE_H__
 
-#include "ParentScene.h"
 #include "cocos2d.h"
 
-class HomeScene : public ParentScene
+class HomeScene : public cocos2d::Scene
 {
 public:
     //游戏界面大小声明
@@ -32,11 +31,10 @@ public:
     void GoToHerosHome(cocos2d::Ref* pSender);
 
     //切换到SettingScene
-    void GoToSettingLayer(cocos2d::Ref* pSender);
+    void GoToSettingScene(cocos2d::Ref* pSender);
 
     //切换到infoscene
     void GoToInfo(cocos2d::Ref* pSender);
-
 };
 
 #endif // __HELLOWORLD_SCENE_H__

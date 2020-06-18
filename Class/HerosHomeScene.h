@@ -1,42 +1,51 @@
-
-
-#ifndef __HEROSHOME_SCENE_H__
+ï»¿#ifndef __HEROSHOME_SCENE_H__
 #define __HEROSHOME_SCENE_H__
 
 
 #include "cocos2d.h"
-#include "ParentScene.h"
-//Ó¢ĞÛ´´½¨
+
 #include "qishi.h"
 #include "Bullet.h"
 #include "equipment.h"
 #include "hero.h"
-#include "Buff.h"
 
-class HerosHome :public ParentScene
-{//Ó¢ĞÛÑ¡Ôñ½çÃæ
+class HerosHome :public cocos2d::Scene
+{
+public:
+    //æ¸¸æˆç•Œé¢å¤§å°å£°æ˜
+    cocos2d::Size VisibleSize;
+
+    //æ¨ªçºµè½´åˆå§‹å€¼å¤§å°å£°æ˜
+    cocos2d::Vec2 Origin;
 
 public:
+
+
     HerosHome();
     ~HerosHome();
 
-    //³¡¾°³õÊ¼»¯
     static cocos2d::Scene* createScene();
     virtual bool init();
     CREATE_FUNC(HerosHome);
-    
-    //Ó¢ĞÛ´´½¨
-    static qishi* hero_qishi;
+
+    qishi* hero_qishi;
+    Sprite* InfoBoard;
 
 
-    //·µ»ØÖ÷½çÃæ
     void BackToHomeScene(cocos2d::Ref* pSender);
-
-    //½øÈëÓÎÏ·½çÃæ
     void GoToGameScene(cocos2d::Ref* pSender);
+    void InfoBTN(cocos2d::Ref* pSender);
+
+    void upDataHeroNature(float t);
+    void upDataAddEnergy(float t);
+
+    void onKeyPressed(EventKeyboard::KeyCode keycode, Event* event);
+    void onKeyReleased(EventKeyboard::KeyCode keycode, Event* event);
+    bool onTouchBegan(Touch* pTouch, Event* pEvent);
+    void onTouchMoved(Touch* pTouch, Event* pEvent);
+    void onTouchEnded(Touch* pTouch, Event* pEvent);
 };
 
 
+
 #endif 
-
-

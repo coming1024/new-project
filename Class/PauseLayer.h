@@ -40,7 +40,7 @@ public:
 	void GoToSettingScene(cocos2d::Ref* pSender);
 
 	//返回主界面
-	void BackToHomeScene(cocos2d::Ref* pSender);
+	void BackToHerosHome(cocos2d::Ref* pSender);
 };
 
 #endif // !__PAUSESCENE_H__

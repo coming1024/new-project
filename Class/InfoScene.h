@@ -2,9 +2,8 @@
 #define __INFOSCENE_H__
 
 #include "cocos2d.h"
-#include "ParentScene.h"
 
-class InfoScene :public ParentScene
+class InfoScene :public cocos2d::Scene
 {
 public:
 	//游戏界面大小声明
@@ -12,7 +11,6 @@ public:
 
 	//横纵轴初始值大小声明
 	cocos2d::Vec2 Origin;
-
 public:
 	InfoScene();
 	~InfoScene();
