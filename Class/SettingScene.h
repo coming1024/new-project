@@ -2,7 +2,9 @@
 #define __SETTINGSCENE_H__
 
 #include "cocos2d.h"
-
+#include "cocos-ext.h"
+USING_NS_CC;
+USING_NS_CC_EXT;
 
 //±≥æ∞“Ù¿÷“Ù¡ø
 extern float BGMvolume;
@@ -27,7 +29,7 @@ public:
 	virtual bool init();
 	CREATE_FUNC(SettingScene);
 	
-	//void BGMControl1(Ref* pSender, Control::EventType event);
+	void BGMControl1(Ref* pSender, Control::EventType event);
 	//“Ù¿÷ø™πÿ
 	void BGMControl(cocos2d::Ref* pSender);
 

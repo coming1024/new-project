@@ -1,4 +1,4 @@
-#include "cocos-ext.h"
+
 #include "SimpleAudioEngine.h"
 
 #include "GameScene.h"
@@ -78,33 +78,16 @@ bool SettingScene::init()
     auto BGMOnOff = MenuItemImage::create("MusicNormal.png",
         "MusicSelected.png",
         CC_CALLBACK_1(SettingScene::BGMControl, this));
-
-    //音量增加
-    auto volumeUp = MenuItemImage::create("addNormal.png",
-                                        "addSelected.png",
-        CC_CALLBACK_1(SettingScene::VolumeControl, this));
-    //音量降低
-    auto volumeDown = MenuItemImage::create("reduceNormal.png",
-                                        "reduceSelected.png",
-        CC_CALLBACK_1(SettingScene::VolumeControl, this));
-    //给音量增加和音量减少键加tag
-    volumeUp->setTag(1);
-    volumeDown->setTag(0);
-
-    //菜单项
-    auto menu1 = Menu::create(BGMOnOff,volumeDown, volumeUp, NULL);
-    menu1->alignItemsHorizontallyWithPadding(10);
-    menu1->setPosition(Vec2(0.5 * VisibleSize.width, 0.6 * VisibleSize.height));
-    this->addChild(menu1, 1);
-    /*
+    BGMOnOff->setPosition(Vec2(0.5 * VisibleSize.width, 0.6 * VisibleSize.height));
+    
     auto MusicSlider = ControlSlider::create("MusicSlide1.png", "MusicSlide2.png", "sliderThumb.png");
-    MusicSlider->setPosition(Vec2(VisibleSize.width*0.5,VisibleSize.height*0.6));
+    MusicSlider->setPosition(Vec2(VisibleSize.width*0.5,VisibleSize.height*0.5));
     MusicSlider->setMinimumValue(0);
     MusicSlider->setMaximumValue(1000);
-    MusicSlider->setValue(500);
+    MusicSlider->setValue(BGMvolume*1000);
     MusicSlider->addTargetWithActionForControlEvents(this, cccontrol_selector(SettingScene::BGMControl1), Control::EventType::VALUE_CHANGED);
-    this->addChild(MusicSlider, 2);
-    */
+    this->addChild(MusicSlider, 1);
+    
 
     //返回主界面
     auto closeItem = MenuItemImage::create("returnNormal.png",
@@ -112,9 +95,9 @@ bool SettingScene::init()
         CC_CALLBACK_1(SettingScene::BackToLastScene, this));
     closeItem->setPosition(Vec2(0.9 * VisibleSize.width, 0.9 * VisibleSize.height));
 
-    auto menu2 = Menu::create(closeItem, NULL);
-    menu2->setPosition(Vec2::ZERO);
-    this->addChild(menu2, 1);
+    auto menu = Menu::create(closeItem,BGMOnOff, NULL);
+    menu->setPosition(Vec2::ZERO);
+    this->addChild(menu, 1);
 
     
 }
@@ -132,14 +115,16 @@ void SettingScene::BGMControl(cocos2d::Ref* pSender)
         SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
     }
 }
-/*
-void SettingScene::BGMControl1(Ref* pSender, Control::EventType event)
+
+void SettingScene::BGMControl1(cocos2d::Ref* pSender, Control::EventType event)
 {
     ControlSlider* slider=(ControlSlider*)pSender;
     String* VolumeStr = String::createWithFormat("%f", slider->getValue());
-    log(VolumeStr->getCString);
+    log(VolumeStr->getCString());
+    BGMvolume = slider->getValue() / slider->getMaximumValue();
+    SimpleAudioEngine::sharedEngine()->setBackgroundMusicVolume(BGMvolume);
 }
-*/
+
 
 //音量控制
 void SettingScene::VolumeControl(cocos2d::Ref* pSender)
