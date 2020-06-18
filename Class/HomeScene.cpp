@@ -15,15 +15,6 @@ HomeScene::HomeScene()
     //游戏界面设定
     this->VisibleSize = Director::getInstance()->getVisibleSize();//x=1024 y=768
     this->Origin = Director::getInstance()->getVisibleOrigin();//origin的x,y值都为0
-
-    //背景音乐
-    //this->BGM = "HomeSceneBGM.mp3";
-
-    //背景音乐音量
-    //this->BGMvolume = 0.5;
-
-    //背景音乐是否播放
-    //this->BGMisPlay = true;
     
 }
 HomeScene::~HomeScene() {};
@@ -165,44 +156,6 @@ void HomeScene::GoToHerosHome(cocos2d::Ref* pSender)
 //设置键
 void HomeScene::GoToSettingScene(Ref* pSender)
 {
-    //原来的场景变化
-    /*
-    BackGround->setTexture("EntryScene1.png");
-    menu1->runAction(fadeout);
-    START->runAction(fadeout);
-
-    //新精灵进入
-    SettingBackGround = Sprite::create("SetBackGround.png");//设置背景
-    if (SettingBackGround == nullptr ||
-        SettingBackGround->getContentSize().width <= 0 ||
-        SettingBackGround->getContentSize().height <= 0)
-    {
-        problemLoading("SetBackGround.png");
-    }
-    else
-    {
-        SettingBackGround->setPosition(Vec2(VisibleSize.width * 0.5, VisibleSize.height * 0.5));
-    }
-    SettingBackGround->setZOrder(2);
-
-    //音量控制和返回键
-    volumeUpBTN = MenuItemImage::create("addNormal.png",
-        "addSelected.png",
-        CC_CALLBACK_1(HomeScene::VolumeControl, this));
-    volumeDownBTN = MenuItemImage::create("reduceNormal.png",
-        "reduceSelected.png",
-        CC_CALLBACK_1(HomeScene::VolumeControl, this));
-    returnBTN = MenuItemImage::create("returnNormal.png",
-        "returnSelected.png",
-        CC_CALLBACK_1(HomeScene::VolumeControl, this));
-
-    volumeUpBTN->setTag(1);
-    volumeDownBTN->setTag(0);
-
-    menu3 = Menu::create(volumeDownBTN, volumeUpBTN, NULL);
-    menu3->alignItemsHorizontallyWithPadding(10);
-    menu3->setPosition(Vec2(VisibleSize.width * 0.55, VisibleSize.height * 0.55));
-    */
     Director::sharedDirector()->pushScene(SettingScene::createScene());
 }
 
