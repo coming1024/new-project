@@ -112,6 +112,7 @@ void PauseLayer::GoToSettingScene(cocos2d::Ref* pSender)
 //返回主界面
 void PauseLayer::BackToHerosHome(cocos2d::Ref* pSender)
 {
+    Director::sharedDirector()->resume();
     Director::sharedDirector()->replaceScene(HerosHome::createScene());
     if (BGMisPlay)
     {
