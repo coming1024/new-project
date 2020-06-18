@@ -1,68 +1,51 @@
-
-
-#ifndef __HEROSHOME_SCENE_H__
+ï»¿#ifndef __HEROSHOME_SCENE_H__
 #define __HEROSHOME_SCENE_H__
 
 
 #include "cocos2d.h"
-//Ó¢ĞÛ´´½¨
+
 #include "qishi.h"
 #include "Bullet.h"
 #include "equipment.h"
 #include "hero.h"
-#include "Buff.h"
 
 class HerosHome :public cocos2d::Scene
 {
 public:
-     //ÓÎÏ·½çÃæ´óĞ¡ÉùÃ÷
+    //æ¸¸æˆç•Œé¢å¤§å°å£°æ˜
     cocos2d::Size VisibleSize;
 
-    //ºá×İÖá³õÊ¼Öµ´óĞ¡ÉùÃ÷
+    //æ¨ªçºµè½´åˆå§‹å€¼å¤§å°å£°æ˜
     cocos2d::Vec2 Origin;
 
-    //±³¾°ÒôÀÖ
-    const char* BGM;
-
-    //±³¾°ÒôÀÖÒôÁ¿
-    float BGMvolume;
-
-    //±³¾°ÒôÀÖÊÇ·ñ²¥·Å
-    bool BGMisPlay;
-
 public:
+
+
     HerosHome();
     ~HerosHome();
 
-    //³¡¾°³õÊ¼»¯
     static cocos2d::Scene* createScene();
     virtual bool init();
     CREATE_FUNC(HerosHome);
-    
-    //Ó¢ĞÛ´´½¨
-    static qishi* hero_qishi;
+
+    qishi* hero_qishi;
+    Sprite* InfoBoard;
 
 
-    //·µ»ØÖ÷½çÃæ
     void BackToHomeScene(cocos2d::Ref* pSender);
-
-    //½øÈëÓÎÏ·½çÃæ
     void GoToGameScene(cocos2d::Ref* pSender);
+    void InfoBTN(cocos2d::Ref* pSender);
 
-    //·µ»Ø±³¾°ÒôÀÖÒôÁ¿´óĞ¡
-    float GetBGMvolume();
+    void upDataHeroNature(float t);
+    void upDataAddEnergy(float t);
 
-    //¸Ä±ä±³¾°ÒôÀÖÒôÁ¿´óĞ¡
-    void SetBGMvolume(float NewVolume);
-
-    //·µ»Ø±³¾°ÒôÀÖÊÇ·ñ²¥·Å
-    bool GetBGMisPlay();
-
-    //¸Ä±ä±³¾°ÒôÀÖ²¥·Å×´Ì¬
-    void SetBGMisPlay(bool isPlay);
+    void onKeyPressed(EventKeyboard::KeyCode keycode, Event* event);
+    void onKeyReleased(EventKeyboard::KeyCode keycode, Event* event);
+    bool onTouchBegan(Touch* pTouch, Event* pEvent);
+    void onTouchMoved(Touch* pTouch, Event* pEvent);
+    void onTouchEnded(Touch* pTouch, Event* pEvent);
 };
 
 
+
 #endif 
-
-
