@@ -1,16 +1,17 @@
 
 
-#ifndef __GAMESCENE_H__//Ö÷½çÃæ
+#ifndef __GAMESCENE_H__//ä¸»ç•Œé¢
 #define __GAMESCENE_H__
 
 #include "cocos2d.h"
 
-//Ó¢ĞÛ´´½¨
+//è‹±é›„åˆ›å»º
 #include "qishi.h"
 #include "Bullet.h"
 #include "equipment.h"
 #include "hero.h"
 #include "Buff.h"
+#include "Monster.h"///
 
 class GameScene : public cocos2d::Scene
 {
@@ -19,14 +20,16 @@ public:
     ~GameScene();
 
 
-    //´´½¨³¡¾°
+    //åˆ›å»ºåœºæ™¯
     static cocos2d::Scene* createScene();
     virtual bool init();
+    bool isRectCollision(CCRect rect1, CCRect rect2);///
     CREATE_FUNC(GameScene);
 
-    //·µ»ØÖ÷½çÃæ
+    //è¿”å›ä¸»ç•Œé¢
     void BackToHomeScene();
-
+private:
+    Monster* monster1;
 
 };
 
