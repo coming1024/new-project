@@ -2,8 +2,8 @@
 
 /*
 	Program MapGen 地图生成合并版
-	File version alpha 0.3
-	TC202006191312
+	File version alpha 0.4
+	TC202006191530
 	ERR=ETH (P.Q.)
 */
 
@@ -26,7 +26,8 @@ namespace MGM
 		empty = 0,
 		start = 1,
 		end = 2,
-		obstacle = 3
+		obstacle = 3,
+		box = 4
 	};
 	private:
 		unsigned int Size_Vert;
@@ -35,6 +36,7 @@ namespace MGM
 		vector<vector<unsigned int>> Cord_Star;
 		vector<vector<unsigned int>> Cord_Exit;
 		vector<vector<unsigned int>> Cord_Obst;
+		vector<vector<unsigned int>> Cord_Boxx;
 		vector<unsigned int> RandCoord(unsigned int rvt, unsigned int rhr, int mode);
 		vector<unsigned int> RandCoord(void);
 	public:
@@ -45,7 +47,9 @@ namespace MGM
 		void GenInit(void);
 		void GenStar(unsigned int num, double range, int maxatt = 100);
 		void GenExit(unsigned int num, double range, int maxatt = 100);
-		void GenObst(unsigned int num, int maxatt = 10000);
+		void GenObst(unsigned int num, int maxatt = 1000);
+		void GenBoxx(unsigned int num, int maxatt = 1000);
+		bool GenerateTile(tile tl, int mode, double range = 0);
 		void PrintMap(std::ostream& os = std::cout);
 	};
 }

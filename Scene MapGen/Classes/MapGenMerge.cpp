@@ -2,8 +2,8 @@
 
 /*
 	Program MapGen 地图生成合并版
-	File version alpha 0.3
-	TC202006191312
+	File version alpha 0.4
+	TC202006191530
 	ERR=ETH (P.Q.)
 */
 
@@ -142,6 +142,8 @@ namespace MGM
 				if (cord == Cord_Exit[ccot]) valid = false;
 			for (unsigned int ccot = 0; ccot < Cord_Obst.size() && valid; ccot++)
 				if (cord == Cord_Obst[ccot]) valid = false;
+			for (unsigned int ccot = 0; ccot < Cord_Boxx.size() && valid; ccot++)
+				if (cord == Cord_Boxx[ccot]) valid = false;
 			if (valid)
 			{
 				Cord_Star.push_back(cord);
@@ -168,6 +170,8 @@ namespace MGM
 				if (cord == Cord_Exit[ccot]) valid = false;
 			for (unsigned int ccot = 0; ccot < Cord_Obst.size() && valid; ccot++)
 				if (cord == Cord_Obst[ccot]) valid = false;
+			for (unsigned int ccot = 0; ccot < Cord_Boxx.size() && valid; ccot++)
+				if (cord == Cord_Boxx[ccot]) valid = false;
 			if (valid)
 			{
 				Cord_Exit.push_back(cord);
@@ -179,8 +183,8 @@ namespace MGM
 
 	//generate map, obstacle | 生成地图，障碍
 	void Gmap::GenObst(unsigned int num, int maxatt)
-		//Generate 'num' obstacles, try 'maxatt' times at most, default 10000 times
-		//生成'num'个数的障碍，最多尝试'maxatt'次，默认10000次
+		//Generate 'num' obstacles, try 'maxatt' times at most, default 1000 times
+		//生成'num'个数的障碍，最多尝试'maxatt'次，默认1000次
 	{
 		for (unsigned int ccot = 0; ccot < Cord_Obst.size(); ccot++) SetTile(Cord_Obst[ccot][0], Cord_Obst[ccot][1], tile::empty);
 		Cord_Obst.clear();
@@ -194,6 +198,8 @@ namespace MGM
 				if (cord == Cord_Exit[ccot]) valid = false;
 			for (unsigned int ccot = 0; ccot < Cord_Obst.size() && valid; ccot++)
 				if (cord == Cord_Obst[ccot]) valid = false;
+			for (unsigned int ccot = 0; ccot < Cord_Boxx.size() && valid; ccot++)
+				if (cord == Cord_Boxx[ccot]) valid = false;
 			if (valid)
 			{
 				Cord_Obst.push_back(cord);
@@ -201,6 +207,73 @@ namespace MGM
 			}
 		}
 		sort(Cord_Obst.begin(), Cord_Obst.end(), CompVec2UInt);
+	}
+
+	//generate map, obstacle | 生成地图，盒子
+	void Gmap::GenBoxx(unsigned int num, int maxatt)
+		//Generate 'num' boxes, try 'maxatt' times at most, default 1000 times
+		//生成'num'个数的盒子，最多尝试'maxatt'次，默认1000次
+	{
+		for (unsigned int ccot = 0; ccot < Cord_Boxx.size(); ccot++) SetTile(Cord_Boxx[ccot][0], Cord_Boxx[ccot][1], tile::empty);
+		Cord_Boxx.clear();
+		while (maxatt-- && Cord_Boxx.size() < num)
+		{
+			vector<unsigned int> cord = RandCoord();
+			bool valid = true;
+			for (unsigned int ccot = 0; ccot < Cord_Star.size() && valid; ccot++)
+				if (cord == Cord_Star[ccot]) valid = false;
+			for (unsigned int ccot = 0; ccot < Cord_Exit.size() && valid; ccot++)
+				if (cord == Cord_Exit[ccot]) valid = false;
+			for (unsigned int ccot = 0; ccot < Cord_Obst.size() && valid; ccot++)
+				if (cord == Cord_Obst[ccot]) valid = false;
+			for (unsigned int ccot = 0; ccot < Cord_Boxx.size() && valid; ccot++)
+				if (cord == Cord_Boxx[ccot]) valid = false;
+			if (valid)
+			{
+				Cord_Boxx.push_back(cord);
+				SetTile(cord[0], cord[1], tile::box);
+			}
+		}
+		sort(Cord_Boxx.begin(), Cord_Boxx.end(), CompVec2UInt);
+	}
+
+	//generate tile | 生成方块
+	bool Gmap::GenerateTile(Gmap::tile tl, int mode, double range)
+		//Generate 'tile' randomly in 'mode' mode, with the argument 'range', failed generation returns false; 'mode' 0 = random, 1 = center, 2=corner
+		//以'mode'模式随机生成方块'tile'，参数为'range'，生成失败返回false；'mode' 0=平均随机，1=中心正态分布，2=角落正态分布
+	{
+		vector<vector<unsigned int>> *Cord_List;
+		switch (tl)
+		{
+		case tile::border:
+		case tile::empty:
+		default:
+			return false;
+		case tile::start:
+			Cord_List = &Cord_Star; break;
+		case tile::end:
+			Cord_List = &Cord_Exit; break;
+		case tile::obstacle:
+			Cord_List = &Cord_Obst; break;
+		case tile::box:
+			Cord_List = &Cord_Boxx; break;
+		}
+		vector<unsigned int> cord;
+		switch (mode)
+		{
+		case 0: cord = RandCoord(); break;
+		case 1: cord = RandCoord((unsigned int)(range * Size_Vert), (unsigned int)(range * Size_Hori), 0); break;
+		case 2: cord = RandCoord((unsigned int)(range * Size_Vert), (unsigned int)(range * Size_Hori), 1); break;
+		default: return false;
+		}
+		if (GetTile(cord[0], cord[1]) == tile::empty)
+		{
+			SetTile(cord[0], cord[1], tl);
+			Cord_List->push_back(cord);
+			sort(Cord_List->begin(), Cord_List->end(), CompVec2UInt);
+			return true;
+		}
+		else return false;
 	}
 
 	//print map | 打印地图
@@ -218,6 +291,7 @@ namespace MGM
 				case tile::start: os << "Ｓ"; break;
 				case tile::end: os << "Ｅ"; break;
 				case tile::obstacle: os << "ｏ"; break;
+				case tile::box: os << "ｘ"; break;
 				default: os << "＄"; break;
 				}
 			os << std::endl;
