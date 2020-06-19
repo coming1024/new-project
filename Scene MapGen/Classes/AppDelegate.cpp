@@ -1,7 +1,5 @@
 
 #include "AppDelegate.h"
-#include "HelloWorldScene.h"
-#include "LevelScene.h"
 #include "LevelEnv.h"
 
 // #define USE_AUDIO_ENGINE 1
