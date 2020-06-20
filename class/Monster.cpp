@@ -1,5 +1,6 @@
 #include "Monster.h"
 #include "qishi.h"
+#include "equipment.h"
 USING_NS_CC;
 Monster::Monster(void)
 {
@@ -345,6 +346,12 @@ void Monster::DeadEnd()
 	m_MonsterImage = CCSprite::create("monster_dead2.png");//恢复死亡的样子
 	m_MonsterImage->setFlipX(MonsterDirecton);
 	this->addChild(m_MonsterImage);
+	auto bulletFrame=bullteCache->getSpriteFrameByName("ptzd.png");
+	auto bullet=Bullet::create(3,bulletFrame);
+	auto equipmentCRQ=equipment::create(2,3,1,1,equipmentCache,"cfqz.png",bullet);
+	equipmentCFQ->setPosition(visibleSize.width/2,visibleSize.height/2);
+	this->addChild(equipmentCFQ,2);
+	weaponArray->addObject(equipmentCFQ);
 	//存在血条
 	if (Monster_xue != NULL)
 	{
