@@ -41,8 +41,8 @@ void Monster::InitMonsterImage(char* name, char* xue_back, char* xue_fore)
 	//Monster_xue->setScale(2.2f);  
 	Monster_xue->setBackgroundTexture(xue_back);
 	Monster_xue->setForegroundTexture(xue_fore);
-	Monster_xue->setTotalHealth(300.0f);
-	Monster_xue->setCurrentHealth(300.0f);
+	Monster_xue->setTotalHealth(80.0f);
+	Monster_xue->setCurrentHealth(80.0f);
 	this->addChild(Monster_xue);
 }
 void  Monster::SetAnimation(const char* name_each, unsigned int num, bool run_directon)
