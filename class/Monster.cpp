@@ -346,6 +346,12 @@ void Monster::DeadEnd()
 	m_MonsterImage = CCSprite::create("monster_dead2.png");//恢复死亡的样子
 	m_MonsterImage->setFlipX(MonsterDirecton);
 	this->addChild(m_MonsterImage);
+	//掉落血瓶
+	auto propSF1=proCache->getSpriteFrameByName("addHealth.png");
+	auto prop1=Prop::create(3,1,propSF1);
+	prop1->setPosition(visibleSize.width/2,visibleSize.height/3);
+	this->addChild(prop1,2);
+	propArray->addObject(prop1);
 	//auto bulletFrame=bullteCache->getSpriteFrameByName("ptzd.png");
 	//auto bullet=Bullet::create(3,bulletFrame);
 	//auto equipmentCRQ=equipment::create(2,3,1,1,equipmentCache,"cfqz.png",bullet);
