@@ -1,4 +1,5 @@
 #include "Monster.h"
+#include "qishi.h"
 USING_NS_CC;
 Monster::Monster(void)
 {
@@ -131,7 +132,7 @@ void Monster::AttackEnd()
 	this->addChild(m_MonsterImage);
 	IsAttack = false;
 }
-void Monster::FollowRun(CCNode* m_hero, CCNode* m_map)
+void Monster::FollowRun(qishi* m_hero, CCNode* m_map)
 {
 	//得到两点x的距离,记得怪物的坐标要加上地图的
 	float x = m_hero->getPositionX() - (this->getPositionX() + m_map->getPositionX());
@@ -230,7 +231,7 @@ void  Monster::MonsterSeeRun()
 	this->runAction(xunluo);
 }
 //启动监听
-void Monster::StartListen(CCNode* m_hero, CCNode* m_map)
+void Monster::StartListen(qishi* m_hero, CCNode* m_map)
 {
 	my_hero = m_hero;
 	my_map = m_map;
