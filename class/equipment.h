@@ -4,7 +4,7 @@
 #include<cocos2d.h>
 #include"Bullet.h"
 USING_NS_CC;
-class equipment:public cocos2d::Sprite
+class equipment :public cocos2d::Sprite
 {
 public:
 	int _ATK;
@@ -16,8 +16,8 @@ public:
 	Bullet* _bullet;
 	int _width;
 	int _hight;
-	static equipment* create(int, int, int, bool, SpriteFrameCache* cache, char* s,Bullet*);
-	static equipment* create(int, int, int, bool, SpriteFrameCache* cache, char* s, Vector<SpriteFrame*>,int w,int h);
+	static equipment* create(int, int, int, bool, SpriteFrameCache* cache, char* s, Bullet*);
+	static equipment* create(int, int, int, bool, SpriteFrameCache* cache, char* s, Vector<SpriteFrame*>, int w, int h);
 	int getWidth();
 	int getHight();
 	bool getType();

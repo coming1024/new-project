@@ -1,7 +1,7 @@
 #include "equipment.h"
 bool equipment::operator==(const equipment& rhs)const
 {
-	if (_ATK == rhs._ATK && _speed == rhs._speed )
+	if (_ATK == rhs._ATK && _speed == rhs._speed)
 	{
 		return true;
 	}
@@ -11,7 +11,7 @@ bool equipment::operator==(const equipment& rhs)const
 	}
 }
 
-equipment* equipment::create(int ATK, int speed, int type,bool isContinue, SpriteFrameCache* cache, char* s, Bullet* bullet)
+equipment* equipment::create(int ATK, int speed, int type, bool isContinue, SpriteFrameCache* cache, char* s, Bullet* bullet)
 {
 	equipment* equip = new equipment();
 	if (equip && equip->initWithSpriteFrame(cache->getSpriteFrameByName(s)))
@@ -26,7 +26,7 @@ equipment* equipment::create(int ATK, int speed, int type,bool isContinue, Sprit
 	CC_SAFE_DELETE(equip);
 	return NULL;
 }
-equipment* equipment::create(int ATK, int speed, int type, bool isContinue, SpriteFrameCache* cache, char* s, Vector<SpriteFrame*> vector_frame_jzxfw,int w,int h)
+equipment* equipment::create(int ATK, int speed, int type, bool isContinue, SpriteFrameCache* cache, char* s, Vector<SpriteFrame*> vector_frame_jzxfw, int w, int h)
 {
 	equipment* equip = new equipment();
 	equip->initWithSpriteFrame(cache->getSpriteFrameByName(s));

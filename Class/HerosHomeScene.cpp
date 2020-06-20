@@ -87,7 +87,7 @@ bool HerosHome::init()
         StartBTN->setPosition(Vec2(VisibleSize.width * 0.5, VisibleSize.height * 0.8));
     }
 
-    auto menu1 = Menu::create(Infomation,CloseItem, StartBTN, NULL);
+    auto menu1 = Menu::create(Infomation, CloseItem, StartBTN, NULL);
     menu1->setPosition(Vec2::ZERO);
     this->addChild(menu1, 1);
 
@@ -124,7 +124,7 @@ bool HerosHome::init()
 
     this->schedule(schedule_selector(HerosHome::upDataHeroNature), 0.05f);
     this->schedule(schedule_selector(HerosHome::upDataAddEnergy), 1.5);
-  
+
     return true;
 }
 
@@ -139,12 +139,12 @@ void HerosHome::BackToHomeScene(cocos2d::Ref* pSender)
     {
         Director::sharedDirector()->replaceScene(HomeScene::createScene());
     }
-    
+
 }
 
 void HerosHome::GoToGameScene(cocos2d::Ref* pSender)
 {
-    Director::sharedDirector()->replaceScene(GameScene::createScene());
+    Director::sharedDirector()->replaceScene(LevelEnv::createScene());
     if (BGMisPlay)
     {
         SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();

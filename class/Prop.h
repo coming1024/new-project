@@ -3,10 +3,10 @@
 #define __Prop_h__
 #include<cocos2d.h>
 USING_NS_CC;
-class Prop: public Sprite 
+class Prop : public Sprite
 {
 public:
-	static Prop* create(int,int, SpriteFrame*);
+	static Prop* create(int, int, SpriteFrame*);
 	int getAddNum();
 	void setAddNum(int);
 	int getType();

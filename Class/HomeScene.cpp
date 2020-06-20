@@ -10,19 +10,19 @@
 USING_NS_CC;
 USING_NS_CC_EXT;
 using namespace CocosDenshion;
-HomeScene::HomeScene() 
+HomeScene::HomeScene()
 {
     //游戏界面设定
     this->VisibleSize = Director::getInstance()->getVisibleSize();//x=1024 y=768
     this->Origin = Director::getInstance()->getVisibleOrigin();//origin的x,y值都为0
-    
+
 }
 HomeScene::~HomeScene() {};
 
 Scene* HomeScene::createScene()
 {
     auto HomeLayer = Layer::create();
-    auto scene= HomeScene::create();
+    auto scene = HomeScene::create();
     scene->addChild(HomeLayer, 0);
     return scene;
 }
@@ -39,7 +39,7 @@ static void problemLoading(const char* filename)
 bool HomeScene::init()
 {
 
-    if ( !Scene::init() )
+    if (!Scene::init())
     {
         return false;
     }
@@ -106,15 +106,15 @@ bool HomeScene::init()
         problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
     }
 
-    auto menu1 = Menu::create(setBTN,infoBTN,closeItem,NULL);
+    auto menu1 = Menu::create(setBTN, infoBTN, closeItem, NULL);
     menu1->alignItemsVerticallyWithPadding(10);
-    menu1->setPosition(Vec2(0.1*VisibleSize.width,0.2*VisibleSize.height));
+    menu1->setPosition(Vec2(0.1 * VisibleSize.width, 0.2 * VisibleSize.height));
     this->addChild(menu1, 1);
 
     //////////////////////////////////////////////////
     //开始游戏
-    auto START = MenuItemLabel::create(Label::createWithTTF("START GAME", "fonts/Marker Felt.ttf", 48),
-                            CC_CALLBACK_1(HomeScene::GoToHerosHome, this));
+    auto START = MenuItemLabel::create(Label::createWithTTF("START GAME", "fonts/Marker Felt.ttf", 24),
+        CC_CALLBACK_1(HomeScene::GoToHerosHome, this));
 
     if (START == nullptr ||
         START->getContentSize().width <= 0 ||
@@ -124,7 +124,7 @@ bool HomeScene::init()
     }
     else
     {
-        START->setPosition(Vec2(VisibleSize.width*0.5, VisibleSize.height*0.2));
+        START->setPosition(Vec2(VisibleSize.width * 0.5, VisibleSize.height * 0.2));
     }
 
     auto menu2 = Menu::create(START, NULL);
@@ -148,7 +148,7 @@ void HomeScene::GoToHerosHome(cocos2d::Ref* pSender)
     if (BGMisPlay)
     {
         SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-        SimpleAudioEngine::sharedEngine()->playBackgroundMusic("HerosHome.mp3",true);
+        SimpleAudioEngine::sharedEngine()->playBackgroundMusic("HerosHome.mp3", true);
         SimpleAudioEngine::sharedEngine()->setBackgroundMusicVolume(BGMvolume);
     }
 }

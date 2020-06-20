@@ -28,7 +28,7 @@ public:
 	static cocos2d::Scene* createScene();
 	virtual bool init();
 	CREATE_FUNC(SettingScene);
-	
+
 	void BGMControl1(Ref* pSender, Control::EventType event);
 	//“Ù¿÷ø™πÿ
 	void BGMControl(cocos2d::Ref* pSender);
@@ -40,5 +40,3 @@ public:
 };
 
 #endif // !__INFOSCENE_H__
-
-

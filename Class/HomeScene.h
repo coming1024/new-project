@@ -1,9 +1,8 @@
-
-
 #ifndef __HOMESCENE_H__//Ö÷½çÃæ
 #define __HOMESCENE_H__
 
 #include "cocos2d.h"
+#include"LevelEnv.h"
 
 class HomeScene : public cocos2d::Scene
 {
