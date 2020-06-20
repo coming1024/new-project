@@ -158,7 +158,7 @@ void Monster::FollowRun(CCNode* m_hero, CCNode* m_map)
 		if (IsAttack)
 			return;
 		this->setPosition(this->getPositionX() - 1, this->getPositionY());//怪物向英雄移动
-		this->SetAnimation("monster_run", 6, MonsterDirecton);//播放动画
+		this->SetAnimation("monster_run", 3, MonsterDirecton);//播放动画
 
 	}
 	else if (x > 100)
@@ -169,7 +169,7 @@ void Monster::FollowRun(CCNode* m_hero, CCNode* m_map)
 		if (IsAttack)
 			return;
 		this->setPosition(this->getPositionX() + 1, this->getPositionY());
-		this->SetAnimation("monster_run", 6, MonsterDirecton);//播放动画
+		this->SetAnimation("monster_run", 3, MonsterDirecton);//播放动画
 	}
 	else if (x <= 100)//怪物橫坐標和英雄相差在100以内时，开始移动怪物纵坐标
 	{
@@ -180,7 +180,7 @@ void Monster::FollowRun(CCNode* m_hero, CCNode* m_map)
 			if (IsAttack)
 				return;
 			this->setPosition(this->getPositionX(), this->getPositionY() + 1);
-			this->SetAnimation("monster_run", 6, MonsterDirecton);//播放动画
+			this->SetAnimation("monster_run", 3, MonsterDirecton);//播放动画
 		}
 		else if (m_hero->getPositionY() < this->getPositionY())
 		{
@@ -188,7 +188,7 @@ void Monster::FollowRun(CCNode* m_hero, CCNode* m_map)
 			if (IsAttack)
 				return;
 			this->setPosition(this->getPositionX(), this->getPositionY() - 1);
-			this->SetAnimation("monster_run", 6, MonsterDirecton);//播放动画
+			this->SetAnimation("monster_run", 3, MonsterDirecton);//播放动画
 		}
 	}
 
@@ -199,7 +199,7 @@ void Monster::JudegeAttack()
 	int x = rand() % 100;
 	if (x > 98)
 	{
-		this->AttackAnimation("monster_attack", 5, MonsterDirecton);
+		this->AttackAnimation("monster_attack", 3, MonsterDirecton);
 	}
 
 }
@@ -207,7 +207,7 @@ void  Monster::MonsterSeeRun()
 {
 	if (dis < 300)
 		return;
-	this->SetAnimation("monster_run", 6, MonsterDirecton);//播放动画
+	this->SetAnimation("monster_run", 3, MonsterDirecton);//播放动画
 	CCMoveBy* moveby1;
 
 	//怪物来回巡逻
