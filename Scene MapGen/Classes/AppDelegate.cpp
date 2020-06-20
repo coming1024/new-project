@@ -1,7 +1,5 @@
 
 #include "AppDelegate.h"
-#include "HelloWorldScene.h"
-#include "LevelScene.h"
 #include "LevelEnv.h"
 
 // #define USE_AUDIO_ENGINE 1
@@ -101,7 +99,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto scene = LevelEnv::createScene();
 
     // run
-    director->runWithScene(scene);
+	director->runWithScene(scene);
 
     return true;
 }

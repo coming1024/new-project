@@ -1,21 +1,21 @@
-#if true
+ï»¿#if true
 
 /*
-	Program MapGen µØÍ¼Éú³ÉºÏ²¢°æ
-	File version alpha 0.3
-	TC202006191312
+	Program MapGen åœ°å›¾ç”Ÿæˆåˆå¹¶ç‰ˆ
+	File version alpha 0.5
+	TC202006192028
 	ERR=ETH (P.Q.)
 */
 
 #include "MapGenMerge.h"
-#include "GaussRand.cpp" //ÎÒÒ²²»ÖªµÀÎªÊ²Ã´ÕâÀïÓÃ.h»á³ö´í£¬×ÜÖ®.cppÃ»ÎÊÌâ£¬¾ÍÏÈÕâÑù·Å×ÅÁË
+#include "GaussRand.cpp" ///æˆ‘ä¹Ÿä¸çŸ¥é“ä¸ºä»€ä¹ˆè¿™é‡Œç”¨.hä¼šå‡ºé”™ï¼Œæ€»ä¹‹.cppæ²¡é—®é¢˜ï¼Œå°±å…ˆè¿™æ ·æ”¾ç€äº†|p.s.è¿™ä¸œè¥¿ä¹Ÿä¸èƒ½ä¸¢åˆ°å¤´æ–‡ä»¶é‡Œï¼Œæ·¦
 
 namespace MGM
 {
-	//compare 2 elem UInt vector | ±È½Ï2ÔªËØÎŞ·ûºÅÕûĞÍvector
+	//compare 2 elem UInt vector | æ¯”è¾ƒ2å…ƒç´ æ— ç¬¦å·æ•´å‹vector
 	bool CompVec2UInt(vector<unsigned int> fw, vector<unsigned int> bk)
-		//Used to sort coordinates
-		//ÓÃÓÚÅÅĞò×ø±ê
+		///Used to sort coordinates
+		///ç”¨äºæ’åºåæ ‡
 	{
 		if (fw.front() > bk.front()) return false;
 		else if (fw.front() == bk.front())
@@ -26,10 +26,10 @@ namespace MGM
 		else return true;
 	}
 
-	//constructor | ¹¹Ôìº¯Êı
+	//constructor | æ„é€ å‡½æ•°
 	Gmap::Gmap(unsigned int svt, unsigned int shr)
-		//Specify the map vertical size 'svt' and horizontal size 'shr', generate empty map
-		//Ã÷È·Ö¸¶¨µØÍ¼´¹Ö±´óĞ¡'svt'ÓëË®Æ½´óĞ¡'shr'£¬Éú³É¿Õ°×µØÍ¼
+		///Specify the map vertical size 'svt' and horizontal size 'shr', generate empty map
+		///æ˜ç¡®æŒ‡å®šåœ°å›¾å‚ç›´å¤§å°'svt'ä¸æ°´å¹³å¤§å°'shr'ï¼Œç”Ÿæˆç©ºç™½åœ°å›¾
 	{
 		Size_Vert = svt;
 		Size_Hori = shr;
@@ -37,25 +37,55 @@ namespace MGM
 		GenInit();
 	}
 
-	//destructor | Îö¹¹º¯Êı
+	//clone constructor | å¤åˆ¶æ„é€ å‡½æ•°
+	Gmap::Gmap(Gmap& clone)
+		///Clone another map that already exists
+		///å¤åˆ¶å·²ç»å­˜åœ¨çš„å¦ä¸€ä¸ªåœ°å›¾
+	{
+		Size_Vert = clone.Size_Vert;
+		Size_Hori = clone.Size_Hori;
+		Smap = new tile[(Size_Vert + 2) * (Size_Hori + 2)];
+		for (unsigned int vcot = 0; vcot <= Size_Vert + 1; vcot++)
+			for (unsigned int hcot = 0; hcot <= Size_Hori + 1; hcot++)
+				SetTile(vcot, hcot, clone.GetTile(vcot, hcot));
+		Cord_Star = clone.Cord_Star;
+		Cord_Exit = clone.Cord_Exit;
+		Cord_Obst = clone.Cord_Obst;
+		Cord_Boxx = clone.Cord_Boxx;
+	}
+
+	//destructor | ææ„å‡½æ•°
 	Gmap::~Gmap()
+		///ğŸ‘†Kibo no Hana
+		///å…¶ä»–å‡½æ•°éƒ½æœ‰æ³¨é‡Šï¼Œè¿™é‡Œä¸å†™æ³¨é‡Šä¸æ•´é½ï¼Œä½†æ˜¯çœŸçš„æ²¡æœ‰ä»€ä¹ˆå¯ä»¥æ³¨é‡Šçš„äº†
 	{
 		delete[] Smap;
 	}
 
-	//get tile | ¶ÁÈ¡·½¿é
+	//get size of map | è¯»å–åœ°å›¾å¤§å°
+	vector<unsigned int> Gmap::GetSize(void)
+		///Return vector, the first element is vertical size, the last element is horizontal size
+		///è¿”å›å‘é‡ï¼Œé¦–å…ƒç´ ä¸ºå‚ç›´å¤§å°ï¼Œæœ«å…ƒç´ ä¸ºæ°´å¹³å¤§å°
+	{
+		vector<unsigned int> cord;
+		cord.push_back(Size_Vert);
+		cord.push_back(Size_Hori);
+		return cord;
+	}
+
+	//get tile | è¯»å–æ–¹å—
 	Gmap::tile Gmap::GetTile(unsigned int cvt, unsigned int chr)
-		//Return tile at 'cvt,chr'(vertical,horizontal), return 'tile::error' if exceeds limit
-		//·µ»Ø×ø±êÎª'cvt,chr'(´¹Ö±,Ë®Æ½)µÄ·½¿é£¬³¬³ö±ß½ç·µ»Ø'tile::error'
+		///Return tile at 'cvt,chr'(vertical,horizontal), return 'tile::error' if exceeds limit
+		///è¿”å›åæ ‡ä¸º'cvt,chr'(å‚ç›´,æ°´å¹³)çš„æ–¹å—ï¼Œè¶…å‡ºè¾¹ç•Œè¿”å›'tile::error'
 	{
 		if (cvt >= 0 && cvt <= Size_Vert + 1 && chr >= 0 && chr <= Size_Hori + 1) return Smap[cvt * (Size_Hori + 2) + chr];
 		else return tile::error;
 	}
 
-	//set tile | ÉèÖÃ·½¿é
+	//set tile | è®¾ç½®æ–¹å—
 	Gmap::tile Gmap::SetTile(unsigned int cvt, unsigned int chr, Gmap::tile tl)
-		//Set tile at 'cvt,chr'(vertical,horizontal) into 'tl', return 'tile::error' if exceeds limit
-		//½«×ø±êÎª'cvt,chr'(´¹Ö±,Ë®Æ½)µÄ·½¿éÉèÖÃÎª'tl'²¢·µ»Ø£¬³¬³ö±ß½ç·µ»Ø'tile::error'
+		///Set tile at 'cvt,chr'(vertical,horizontal) into 'tl', return 'tile::error' if exceeds limit
+		///å°†åæ ‡ä¸º'cvt,chr'(å‚ç›´,æ°´å¹³)çš„æ–¹å—è®¾ç½®ä¸º'tl'å¹¶è¿”å›ï¼Œè¶…å‡ºè¾¹ç•Œè¿”å›'tile::error'
 	{
 		if (cvt >= 0 && cvt <= Size_Vert + 1 && chr >= 0 && chr <= Size_Hori + 1)
 		{
@@ -65,19 +95,19 @@ namespace MGM
 		else return tile::error;
 	}
 
-	//random coordinate | Ëæ»ú×ø±ê
+	//random coordinate | éšæœºåæ ‡
 	vector<unsigned int> Gmap::RandCoord(unsigned int rvt, unsigned int rhr, int mode)
-		//Get random coordinate in vertical range 'rvt' and horizontal range 'rhr', normal distribution; 'mode' 0 = center, 1 = corner distribution
-		//Ëæ»ú»ñÈ¡´¹Ö±·¶Î§'rvt'ÓëË®Æ½·¶Î§'rhr'ÖĞµÄÒ»¸ö×ø±ê£¬ÕıÌ¬·Ö²¼£»'mode' 0=ÖĞĞÄÉ¢²¼£¬1=½ÇÂäÉ¢²¼
+		///Get random coordinate in vertical range 'rvt' and horizontal range 'rhr', normal distribution; 'mode' 0 = center, 1 = corner distribution
+		///éšæœºè·å–å‚ç›´èŒƒå›´'rvt'ä¸æ°´å¹³èŒƒå›´'rhr'ä¸­çš„ä¸€ä¸ªåæ ‡ï¼Œæ­£æ€åˆ†å¸ƒï¼›'mode' 0=ä¸­å¿ƒæ•£å¸ƒï¼Œ1=è§’è½æ•£å¸ƒ
 	{
 		if (rvt > Size_Vert) rvt = Size_Vert;
 		if (rhr > Size_Hori) rhr = Size_Hori;
 		vector<unsigned int> cord;
 		double ovt, ohr;
 		do ovt = GaussRand() * (double)rvt / 4;
-		while (abs(ovt) > (double)rvt / 2); //·À³¬³ö±ß½ç
+		while (abs(ovt) > (double)rvt / 2); //é˜²è¶…å‡ºèŒƒå›´
 		do ohr = GaussRand() * (double)rhr / 4;
-		while (abs(ohr) > (double)rhr / 2); //·À³¬³ö±ß½ç
+		while (abs(ohr) > (double)rhr / 2); //é˜²è¶…å‡ºèŒƒå›´
 		switch (mode)
 		{
 		case 0:
@@ -100,10 +130,10 @@ namespace MGM
 		return cord;
 	}
 
-	//random coordinate | Ëæ»ú×ø±ê
+	//random coordinate | éšæœºåæ ‡
 	vector<unsigned int> Gmap::RandCoord(void)
-		//Get random coordinate in the map
-		//ÔÚµØÍ¼ÖĞËæ»ú»ñÈ¡Ò»¸ö×ø±ê
+		///Get random coordinate in the map
+		///åœ¨åœ°å›¾ä¸­éšæœºè·å–ä¸€ä¸ªåæ ‡
 	{
 		vector<unsigned int> cord;
 		cord.push_back((unsigned int)((double)Size_Vert * (double)rand() / (double)(RAND_MAX + 1) + 1));
@@ -111,10 +141,10 @@ namespace MGM
 		return cord;
 	}
 
-	//generate map, initialize | Éú³ÉµØÍ¼£¬³õÊ¼»¯
+	//generate map, initialize | ç”Ÿæˆåœ°å›¾ï¼Œåˆå§‹åŒ–
 	void Gmap::GenInit(void)
-		//Clear map, place borders
-		//Çå¿ÕµØÍ¼£¬·ÅÖÃ±ß½ç
+		///Clear map, place borders
+		///æ¸…ç©ºåœ°å›¾ï¼Œæ”¾ç½®è¾¹ç•Œ
 	{
 		for (unsigned int vcot = 0; vcot <= Size_Vert + 1; vcot++)
 			for (unsigned int hcot = 0; hcot <= Size_Hori + 1; hcot++)
@@ -125,10 +155,10 @@ namespace MGM
 		Cord_Obst.clear();
 	}
 
-	//generate map, entrance | Éú³ÉµØÍ¼£¬Èë¿Ú
-	void Gmap::GenStar(unsigned int num, double range, int maxatt)
-		//Generate 'num' entrances in the range of 'range'(0~1), try 'maxatt' times at most, default 100 times
-		//ÔÚ'range'(0~1)·¶Î§ÄÚÉú³É'num'¸öÊıµÄÈë¿Ú£¬×î¶à³¢ÊÔ'maxatt'´Î£¬Ä¬ÈÏ100´Î
+	//generate map, entrance | ç”Ÿæˆåœ°å›¾ï¼Œå…¥å£
+	void Gmap::GenStar(unsigned int num, double range, int maxatt) ///Consider using 'GenerateTile()' function instead | è¯·è€ƒè™‘ä½¿ç”¨'GenerateTile()'å‡½æ•°ä»£æ›¿
+		///Generate 'num' entrances in the range of 'range'(0~1), try 'maxatt' times at most, default 100 times
+		///åœ¨'range'(0~1)èŒƒå›´å†…ç”Ÿæˆ'num'ä¸ªæ•°çš„å…¥å£ï¼Œæœ€å¤šå°è¯•'maxatt'æ¬¡ï¼Œé»˜è®¤100æ¬¡
 	{
 		for (unsigned int ccot = 0; ccot < Cord_Star.size(); ccot++) SetTile(Cord_Star[ccot][0], Cord_Star[ccot][1], tile::empty);
 		Cord_Star.clear();
@@ -142,6 +172,8 @@ namespace MGM
 				if (cord == Cord_Exit[ccot]) valid = false;
 			for (unsigned int ccot = 0; ccot < Cord_Obst.size() && valid; ccot++)
 				if (cord == Cord_Obst[ccot]) valid = false;
+			for (unsigned int ccot = 0; ccot < Cord_Boxx.size() && valid; ccot++)
+				if (cord == Cord_Boxx[ccot]) valid = false;
 			if (valid)
 			{
 				Cord_Star.push_back(cord);
@@ -151,10 +183,10 @@ namespace MGM
 		sort(Cord_Star.begin(), Cord_Star.end(), CompVec2UInt);
 	}
 
-	//generate map, exit | Éú³ÉµØÍ¼£¬³ö¿Ú
-	void Gmap::GenExit(unsigned int num, double range, int maxatt)
-		//Generate 'num' exits in the range of 'range'(0~1), try 'maxatt' times at most, default 100 times
-		//ÔÚ'range'(0~1)·¶Î§ÄÚÉú³É'num'¸öÊıµÄ³ö¿Ú£¬×î¶à³¢ÊÔ'maxatt'´Î£¬Ä¬ÈÏ100´Î
+	//generate map, exit | ç”Ÿæˆåœ°å›¾ï¼Œå‡ºå£
+	void Gmap::GenExit(unsigned int num, double range, int maxatt) ///Consider using 'GenerateTile()' function instead | è¯·è€ƒè™‘ä½¿ç”¨'GenerateTile()'å‡½æ•°ä»£æ›¿
+		///Generate 'num' exits in the range of 'range'(0~1), try 'maxatt' times at most, default 100 times
+		///åœ¨'range'(0~1)èŒƒå›´å†…ç”Ÿæˆ'num'ä¸ªæ•°çš„å‡ºå£ï¼Œæœ€å¤šå°è¯•'maxatt'æ¬¡ï¼Œé»˜è®¤100æ¬¡
 	{
 		for (unsigned int ccot = 0; ccot < Cord_Exit.size(); ccot++) SetTile(Cord_Exit[ccot][0], Cord_Exit[ccot][1], tile::empty);
 		Cord_Exit.clear();
@@ -168,6 +200,8 @@ namespace MGM
 				if (cord == Cord_Exit[ccot]) valid = false;
 			for (unsigned int ccot = 0; ccot < Cord_Obst.size() && valid; ccot++)
 				if (cord == Cord_Obst[ccot]) valid = false;
+			for (unsigned int ccot = 0; ccot < Cord_Boxx.size() && valid; ccot++)
+				if (cord == Cord_Boxx[ccot]) valid = false;
 			if (valid)
 			{
 				Cord_Exit.push_back(cord);
@@ -177,10 +211,10 @@ namespace MGM
 		sort(Cord_Exit.begin(), Cord_Exit.end(), CompVec2UInt);
 	}
 
-	//generate map, obstacle | Éú³ÉµØÍ¼£¬ÕÏ°­
-	void Gmap::GenObst(unsigned int num, int maxatt)
-		//Generate 'num' obstacles, try 'maxatt' times at most, default 10000 times
-		//Éú³É'num'¸öÊıµÄÕÏ°­£¬×î¶à³¢ÊÔ'maxatt'´Î£¬Ä¬ÈÏ10000´Î
+	//generate map, obstacle | ç”Ÿæˆåœ°å›¾ï¼Œéšœç¢
+	void Gmap::GenObst(unsigned int num, int maxatt) ///Consider using 'GenerateTile()' function instead | è¯·è€ƒè™‘ä½¿ç”¨'GenerateTile()'å‡½æ•°ä»£æ›¿
+		///Generate 'num' obstacles, try 'maxatt' times at most, default 1000 times
+		///ç”Ÿæˆ'num'ä¸ªæ•°çš„éšœç¢ï¼Œæœ€å¤šå°è¯•'maxatt'æ¬¡ï¼Œé»˜è®¤1000æ¬¡
 	{
 		for (unsigned int ccot = 0; ccot < Cord_Obst.size(); ccot++) SetTile(Cord_Obst[ccot][0], Cord_Obst[ccot][1], tile::empty);
 		Cord_Obst.clear();
@@ -194,6 +228,8 @@ namespace MGM
 				if (cord == Cord_Exit[ccot]) valid = false;
 			for (unsigned int ccot = 0; ccot < Cord_Obst.size() && valid; ccot++)
 				if (cord == Cord_Obst[ccot]) valid = false;
+			for (unsigned int ccot = 0; ccot < Cord_Boxx.size() && valid; ccot++)
+				if (cord == Cord_Boxx[ccot]) valid = false;
 			if (valid)
 			{
 				Cord_Obst.push_back(cord);
@@ -203,22 +239,90 @@ namespace MGM
 		sort(Cord_Obst.begin(), Cord_Obst.end(), CompVec2UInt);
 	}
 
-	//print map | ´òÓ¡µØÍ¼
+	//generate map, obstacle | ç”Ÿæˆåœ°å›¾ï¼Œç›’å­
+	void Gmap::GenBoxx(unsigned int num, int maxatt) ///Consider using 'GenerateTile()' function instead | è¯·è€ƒè™‘ä½¿ç”¨'GenerateTile()'å‡½æ•°ä»£æ›¿
+		///Generate 'num' boxes, try 'maxatt' times at most, default 1000 times
+		///ç”Ÿæˆ'num'ä¸ªæ•°çš„ç›’å­ï¼Œæœ€å¤šå°è¯•'maxatt'æ¬¡ï¼Œé»˜è®¤1000æ¬¡
+	{
+		for (unsigned int ccot = 0; ccot < Cord_Boxx.size(); ccot++) SetTile(Cord_Boxx[ccot][0], Cord_Boxx[ccot][1], tile::empty);
+		Cord_Boxx.clear();
+		while (maxatt-- && Cord_Boxx.size() < num)
+		{
+			vector<unsigned int> cord = RandCoord();
+			bool valid = true;
+			for (unsigned int ccot = 0; ccot < Cord_Star.size() && valid; ccot++)
+				if (cord == Cord_Star[ccot]) valid = false;
+			for (unsigned int ccot = 0; ccot < Cord_Exit.size() && valid; ccot++)
+				if (cord == Cord_Exit[ccot]) valid = false;
+			for (unsigned int ccot = 0; ccot < Cord_Obst.size() && valid; ccot++)
+				if (cord == Cord_Obst[ccot]) valid = false;
+			for (unsigned int ccot = 0; ccot < Cord_Boxx.size() && valid; ccot++)
+				if (cord == Cord_Boxx[ccot]) valid = false;
+			if (valid)
+			{
+				Cord_Boxx.push_back(cord);
+				SetTile(cord[0], cord[1], tile::box);
+			}
+		}
+		sort(Cord_Boxx.begin(), Cord_Boxx.end(), CompVec2UInt);
+	}
+
+	//generate tile | ç”Ÿæˆæ–¹å—
+	bool Gmap::GenerateTile(Gmap::tile tl, int mode, double range)
+		///Generate 'tile' randomly in 'mode' mode, with the argument 'range', failed generation returns false; 'mode' 0 = random, 1 = center, 2=corner
+		///ä»¥'mode'æ¨¡å¼éšæœºç”Ÿæˆæ–¹å—'tile'ï¼Œå‚æ•°ä¸º'range'ï¼Œç”Ÿæˆå¤±è´¥è¿”å›falseï¼›'mode' 0=å¹³å‡éšæœºï¼Œ1=ä¸­å¿ƒæ­£æ€åˆ†å¸ƒï¼Œ2=è§’è½æ­£æ€åˆ†å¸ƒ
+	{
+		vector<vector<unsigned int>> *Cord_List;
+		switch (tl)
+		{
+		case tile::border:
+		case tile::empty:
+		default:
+			return false;
+		case tile::start:
+			Cord_List = &Cord_Star; break;
+		case tile::end:
+			Cord_List = &Cord_Exit; break;
+		case tile::obstacle:
+			Cord_List = &Cord_Obst; break;
+		case tile::box:
+			Cord_List = &Cord_Boxx; break;
+		}
+		vector<unsigned int> cord;
+		switch (mode)
+		{
+		case 0: cord = RandCoord(); break;
+		case 1: cord = RandCoord((unsigned int)(range * Size_Vert), (unsigned int)(range * Size_Hori), 0); break;
+		case 2: cord = RandCoord((unsigned int)(range * Size_Vert), (unsigned int)(range * Size_Hori), 1); break;
+		default: return false;
+		}
+		if (GetTile(cord[0], cord[1]) == tile::empty)
+		{
+			SetTile(cord[0], cord[1], tl);
+			Cord_List->push_back(cord);
+			sort(Cord_List->begin(), Cord_List->end(), CompVec2UInt);
+			return true;
+		}
+		else return false;
+	}
+
+	//print map | æ‰“å°åœ°å›¾
 	void Gmap::PrintMap(std::ostream& os)
-		//Print map to 'os' stream, default to 'std::cout'
-		//´òÓ¡µØÍ¼µ½'os'Á÷£¬Ô¤ÉèÎª'std::cout'
+		///Print map to 'os' stream, default to 'std::cout'
+		///æ‰“å°åœ°å›¾åˆ°'os'æµï¼Œé¢„è®¾ä¸º'std::cout'
 	{
 		for (unsigned int vcot = 0; vcot <= Size_Vert + 1; vcot++)
 		{
 			for (unsigned int hcot = 0; hcot <= Size_Hori + 1; hcot++)
 				switch (GetTile(vcot, hcot))
 				{
-				case tile::border: os << "££"; break;
-				case tile::empty: os << "¡¡"; break;
-				case tile::start: os << "£Ó"; break;
-				case tile::end: os << "£Å"; break;
-				case tile::obstacle: os << "£ï"; break;
-				default: os << "¡ç"; break;
+				case tile::border: os << "ï¼ƒ"; break;
+				case tile::empty: os << "ã€€"; break;
+				case tile::start: os << "ï¼³"; break;
+				case tile::end: os << "ï¼¥"; break;
+				case tile::obstacle: os << "ï½"; break;
+				case tile::box: os << "ï½˜"; break;
+				default: os << "ï¼„"; break;
 				}
 			os << std::endl;
 		}
@@ -226,7 +330,7 @@ namespace MGM
 }
 
 /*
-	Program MapGen µØÍ¼Éú³ÉºÏ²¢°æ
+	Program MapGen åœ°å›¾ç”Ÿæˆåˆå¹¶ç‰ˆ
 	End
 */
 

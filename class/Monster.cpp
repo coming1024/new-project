@@ -1,4 +1,6 @@
 #include "Monster.h"
+#include "qishi.h"
+#include "equipment.h"
 USING_NS_CC;
 Monster::Monster(void)
 {
@@ -40,8 +42,8 @@ void Monster::InitMonsterImage(char* name, char* xue_back, char* xue_fore)
 	//Monster_xue->setScale(2.2f);  
 	Monster_xue->setBackgroundTexture(xue_back);
 	Monster_xue->setForegroundTexture(xue_fore);
-	Monster_xue->setTotalHealth(300.0f);
-	Monster_xue->setCurrentHealth(300.0f);
+	Monster_xue->setTotalHealth(80.0f);
+	Monster_xue->setCurrentHealth(80.0f);
 	this->addChild(Monster_xue);
 }
 void  Monster::SetAnimation(const char* name_each, unsigned int num, bool run_directon)
@@ -131,7 +133,7 @@ void Monster::AttackEnd()
 	this->addChild(m_MonsterImage);
 	IsAttack = false;
 }
-void Monster::FollowRun(CCNode* m_hero, CCNode* m_map)
+void Monster::FollowRun(qishi* m_hero, CCNode* m_map)
 {
 	//得到两点x的距离,记得怪物的坐标要加上地图的
 	float x = m_hero->getPositionX() - (this->getPositionX() + m_map->getPositionX());
@@ -158,7 +160,7 @@ void Monster::FollowRun(CCNode* m_hero, CCNode* m_map)
 		if (IsAttack)
 			return;
 		this->setPosition(this->getPositionX() - 1, this->getPositionY());//怪物向英雄移动
-		this->SetAnimation("monster_run", 6, MonsterDirecton);//播放动画
+		this->SetAnimation("monster_run", 3, MonsterDirecton);//播放动画
 
 	}
 	else if (x > 100)
@@ -169,7 +171,7 @@ void Monster::FollowRun(CCNode* m_hero, CCNode* m_map)
 		if (IsAttack)
 			return;
 		this->setPosition(this->getPositionX() + 1, this->getPositionY());
-		this->SetAnimation("monster_run", 6, MonsterDirecton);//播放动画
+		this->SetAnimation("monster_run", 3, MonsterDirecton);//播放动画
 	}
 	else if (x <= 100)//怪物橫坐標和英雄相差在100以内时，开始移动怪物纵坐标
 	{
@@ -180,7 +182,7 @@ void Monster::FollowRun(CCNode* m_hero, CCNode* m_map)
 			if (IsAttack)
 				return;
 			this->setPosition(this->getPositionX(), this->getPositionY() + 1);
-			this->SetAnimation("monster_run", 6, MonsterDirecton);//播放动画
+			this->SetAnimation("monster_run", 3, MonsterDirecton);//播放动画
 		}
 		else if (m_hero->getPositionY() < this->getPositionY())
 		{
@@ -188,7 +190,7 @@ void Monster::FollowRun(CCNode* m_hero, CCNode* m_map)
 			if (IsAttack)
 				return;
 			this->setPosition(this->getPositionX(), this->getPositionY() - 1);
-			this->SetAnimation("monster_run", 6, MonsterDirecton);//播放动画
+			this->SetAnimation("monster_run", 3, MonsterDirecton);//播放动画
 		}
 	}
 
@@ -199,7 +201,7 @@ void Monster::JudegeAttack()
 	int x = rand() % 100;
 	if (x > 98)
 	{
-		this->AttackAnimation("monster_attack", 5, MonsterDirecton);
+		this->AttackAnimation("monster_attack", 3, MonsterDirecton);
 	}
 
 }
@@ -207,7 +209,7 @@ void  Monster::MonsterSeeRun()
 {
 	if (dis < 300)
 		return;
-	this->SetAnimation("monster_run", 6, MonsterDirecton);//播放动画
+	this->SetAnimation("monster_run", 3, MonsterDirecton);//播放动画
 	CCMoveBy* moveby1;
 
 	//怪物来回巡逻
@@ -230,7 +232,7 @@ void  Monster::MonsterSeeRun()
 	this->runAction(xunluo);
 }
 //启动监听
-void Monster::StartListen(CCNode* m_hero, CCNode* m_map)
+void Monster::StartListen(qishi* m_hero, CCNode* m_map)
 {
 	my_hero = m_hero;
 	my_map = m_map;
@@ -344,6 +346,12 @@ void Monster::DeadEnd()
 	m_MonsterImage = CCSprite::create("monster_dead2.png");//恢复死亡的样子
 	m_MonsterImage->setFlipX(MonsterDirecton);
 	this->addChild(m_MonsterImage);
+	auto bulletFrame=bullteCache->getSpriteFrameByName("ptzd.png");
+	auto bullet=Bullet::create(3,bulletFrame);
+	auto equipmentCRQ=equipment::create(2,3,1,1,equipmentCache,"cfqz.png",bullet);
+	equipmentCFQ->setPosition(visibleSize.width/2,visibleSize.height/2);
+	this->addChild(equipmentCFQ,2);
+	weaponArray->addObject(equipmentCFQ);
 	//存在血条
 	if (Monster_xue != NULL)
 	{

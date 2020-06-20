@@ -2,8 +2,8 @@
 
 /*
 	Program LevelEnv 关卡场景
-	File version alpha 0.1
-	TC202006191312
+	File version alpha 0.4
+	TC202006201042
 	ERR=ETH (P.Q.)
 */
 
@@ -11,6 +11,7 @@
 #include "cocos2d.h"
 #include <ctime>
 #include "MapGenMerge.h"
+#include "MapGenCocos.h"
 
 class LevelEnv : public cocos2d::Scene
 {
@@ -18,13 +19,13 @@ private:
 	cocos2d::Size VisibleSize;
 	cocos2d::Vec2 Origin;
 	const char* Audio;
-	void TileInstantiate(MGM::Gmap &map, unsigned int cvt, unsigned int chr, Node* mnode);
+	const char* AudioSwitch;
 public:
 	LevelEnv();
 	~LevelEnv();
-	static cocos2d::Scene* createScene(); //创建用
+	static cocos2d::Scene* createScene();
 	virtual bool init();
-	CREATE_FUNC(LevelEnv); //创建用，必要
+	CREATE_FUNC(LevelEnv);
 };
 
 /*
