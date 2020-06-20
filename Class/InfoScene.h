@@ -1,3 +1,4 @@
+
 #ifndef __INFOSCENE_H__
 #define __INFOSCENE_H__
 
@@ -25,4 +26,3 @@ public:
 };
 
 #endif // !__INFOSCENE_H__
-

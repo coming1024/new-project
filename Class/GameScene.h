@@ -1,35 +1,30 @@
-
-
-#ifndef __GAMESCENE_H__//主界面
+﻿#ifndef __GAMESCENE_H__//Ö÷½çÃæ
 #define __GAMESCENE_H__
 
+#include "ParentScene.h"
 #include "cocos2d.h"
 
-//英雄创建
+//Ó¢ÐÛ´´½¨
 #include "qishi.h"
 #include "Bullet.h"
 #include "equipment.h"
 #include "hero.h"
-#include "Buff.h"
-#include "Monster.h"///
 
-class GameScene : public cocos2d::Scene
+class GameScene : public ParentScene
 {
 public:
     GameScene();
     ~GameScene();
 
 
-    //创建场景
+    //´´½¨³¡¾°
     static cocos2d::Scene* createScene();
     virtual bool init();
-    bool isRectCollision(CCRect rect1, CCRect rect2);///
     CREATE_FUNC(GameScene);
 
-    //返回主界面
+    //·µ»ØÖ÷½çÃæ
     void BackToHomeScene();
-private:
-    Monster* monster1;
+
 
 };
 

@@ -8,6 +8,7 @@
 #include "Bullet.h"
 #include "equipment.h"
 #include "hero.h"
+#include"LevelEnv.h"
 
 class HerosHome :public cocos2d::Scene
 {

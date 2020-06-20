@@ -1,4 +1,3 @@
-
 #include "PauseLayer.h"
 #include "HerosHomeScene.h"
 #include "HomeScene.h"
@@ -25,10 +24,10 @@ Layer* PauseLayer::createLayer()
 
 bool PauseLayer::init()
 {
-	if (!Layer::init())
-	{
-		return false;
-	}
+    if (!Layer::init())
+    {
+        return false;
+    }
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -38,7 +37,7 @@ bool PauseLayer::init()
     PauseItem = MenuItemImage::create("PauseNormal.png",
         "PauseSelected.png",
         CC_CALLBACK_1(PauseLayer::GotoPauseScene, this));
-    PauseItem->setPosition(Vec2(visibleSize.width*0.9,visibleSize.height*0.9));
+    PauseItem->setPosition(Vec2(visibleSize.width * 0.9, visibleSize.height * 0.9));
 
     auto  menu1 = Menu::create(PauseItem, NULL);
     menu1->setPosition(Vec2::ZERO);
@@ -67,7 +66,7 @@ void PauseLayer::GotoPauseScene(cocos2d::Ref* pSender)
     //返回主界面
     auto ReturnBTN = MenuItemImage::create("StopNormal.png",
         "StopSelected.png",
-        CC_CALLBACK_1(PauseLayer::BackToHerosHome, this));
+        CC_CALLBACK_1(PauseLayer::BackToHomeScene, this));
     //设置键
     auto SettingBTN = MenuItemImage::create("SetNormal.png",
         "SetSelected.png",
@@ -110,14 +109,7 @@ void PauseLayer::GoToSettingScene(cocos2d::Ref* pSender)
 
 
 //返回主界面
-void PauseLayer::BackToHerosHome(cocos2d::Ref* pSender)
+void PauseLayer::BackToHomeScene(cocos2d::Ref* pSender)
 {
-    Director::sharedDirector()->resume();
-    Director::sharedDirector()->replaceScene(HerosHome::createScene());
-    if (BGMisPlay)
-    {
-        SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
-        SimpleAudioEngine::sharedEngine()->playBackgroundMusic("HerosHome.mp3", true);
-        SimpleAudioEngine::sharedEngine()->setBackgroundMusicVolume(BGMvolume);
-    }
+    Director::sharedDirector()->replaceScene(HomeScene::createScene());
 }

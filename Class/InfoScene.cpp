@@ -1,4 +1,4 @@
-#include "cocos-ext.h"
+ï»¿#include "cocos-ext.h"
 #include "SimpleAudioEngine.h"
 #include "InfoScene.h"
 
@@ -10,9 +10,9 @@ using namespace CocosDenshion;
 
 InfoScene::InfoScene()
 {
-    //ÓÎÏ·½çÃæÉè¶¨
+    //æ¸¸æˆç•Œé¢è®¾å®š
     this->VisibleSize = Director::getInstance()->getVisibleSize();//x=1024 y=768
-    this->Origin = Director::getInstance()->getVisibleOrigin();//originµÄx,yÖµ¶¼Îª0
+    this->Origin = Director::getInstance()->getVisibleOrigin();//originçš„x,yå€¼éƒ½ä¸º0
 }
 InfoScene::~InfoScene() {};
 
@@ -37,7 +37,7 @@ bool InfoScene::init()
         return false;
     }
 
-    //±³¾°
+    //èƒŒæ™¯
     auto InfoBackGround = Sprite::create("EntryScene1.png");
     if (InfoBackGround == nullptr)
     {
@@ -46,10 +46,10 @@ bool InfoScene::init()
     else
     {
         InfoBackGround->setPosition(Vec2(VisibleSize.width / 2, VisibleSize.height / 2));
-        this->addChild(InfoBackGround,0);
+        this->addChild(InfoBackGround, 0);
     }
 
-    //ÐÅÏ¢½çÃæ
+    //ä¿¡æ¯ç•Œé¢
     auto Infomation = Sprite::create("AttackInformation.png");
     if (InfoBackGround == nullptr)
     {
@@ -58,10 +58,10 @@ bool InfoScene::init()
     else
     {
         Infomation->setPosition(Vec2(VisibleSize.width / 2, VisibleSize.height / 2));
-        this->addChild(Infomation,1);
+        this->addChild(Infomation, 1);
     }
 
-    //·µ»Ø¼ü
+    //è¿”å›žé”®
     auto closeItem = MenuItemImage::create("returnNormal.png",
         "returnSelected.png",
         CC_CALLBACK_1(InfoScene::BackToLastScene, this));
@@ -73,15 +73,15 @@ bool InfoScene::init()
     }
     else
     {
-        closeItem->setPosition(Vec2(0.9*VisibleSize.width, 0.9*VisibleSize.height));
+        closeItem->setPosition(Vec2(0.9 * VisibleSize.width, 0.9 * VisibleSize.height));
     }
-    //²Ëµ¥Ïî
+    //èœå•é¡¹
     auto menu = Menu::create(closeItem, NULL);
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
 }
 
-//·µ»Ø¼ü
+//è¿”å›žé”®
 void InfoScene::BackToLastScene(cocos2d::Ref* pSender)
 {
     CCDirector::sharedDirector()->popScene();
