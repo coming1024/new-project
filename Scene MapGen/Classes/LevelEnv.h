@@ -2,8 +2,8 @@
 
 /*
 	Program LevelEnv ¹Ø¿¨³¡¾°
-	File version alpha 0.2
-	TC202006191617
+	File version alpha 0.3
+	TC202006192221
 	ERR=ETH (P.Q.)
 */
 
@@ -11,6 +11,7 @@
 #include "cocos2d.h"
 #include <ctime>
 #include "MapGenMerge.h"
+#include "MapGenCocos.h"
 
 class LevelEnv : public cocos2d::Scene
 {
@@ -19,8 +20,7 @@ private:
 	cocos2d::Vec2 Origin;
 	const char* Audio;
 	const char* AudioSwitch;
-	MGM::Gmap GenerateMap(unsigned int svt, unsigned int shr, unsigned int cst = 0, unsigned int ced = 0, unsigned int cob = 0, unsigned int cbx = 0);
-	void TileInstantiate(MGM::Gmap &map, Node* mnode, unsigned int cvt, unsigned int chr);
+	Node* MapInstantiate(MGM::Cmap &map);
 public:
 	LevelEnv();
 	~LevelEnv();
