@@ -2,8 +2,8 @@
 
 /*
 	Program MapGenCocos 地图生成Cocos版
-	File version alpha 0.5
-	TC202006192028
+	File version alpha 0.6
+	TC202006201012
 	ERR=ETH (P.Q.)
 */
 
@@ -66,11 +66,12 @@ namespace MGM
 		tile->setPosition(Vec2((float)chr * 64, -(float)cvt * 64));
 		switch (GetTile(cvt, chr))
 		{
+		case tile::border:
 		case tile::empty:
 		case tile::obstacle:
 		case tile::box:
 		{
-			sprintf(texture, "RH_Environment/SoulForest/empty_%d.png", rand() % 1);
+			sprintf(texture, "RH_Environment/SoulForest/empty_%d.png", rand() % 4);
 			tile->setTexture(texture);
 			break;
 		}
@@ -86,7 +87,6 @@ namespace MGM
 			tile->setTexture(texture);
 			break;
 		}
-		case tile::border:
 		default:
 		{
 			tile = nullptr;
@@ -109,7 +109,7 @@ namespace MGM
 		{
 		case tile::border:
 		{
-			sprintf(texture, "RH_Environment/SoulForest/border_%db.png", rand() % 1);
+			sprintf(texture, "RH_Environment/SoulForest/border_%db.png", rand() % 2);
 			tile->setTexture(texture);
 			PhysicsBody* rigid = PhysicsBody::createBox(Size(64, 64), PhysicsMaterial(0.1f, 0.5f, 0.5f));
 			rigid->setDynamic(false);
@@ -127,7 +127,7 @@ namespace MGM
 		}
 		case tile::box:
 		{
-			sprintf(texture, "RH_Environment/SoulForest/border_%db.png", rand() % 1);
+			sprintf(texture, "RH_Environment/SoulForest/box_%db.png", rand() % 1);
 			tile->setTexture(texture);
 			PhysicsBody* rigid = PhysicsBody::createBox(Size(64, 64), PhysicsMaterial(0.1f, 0.5f, 0.5f));
 			rigid->setDynamic(false);
@@ -159,7 +159,7 @@ namespace MGM
 		{
 		case tile::border:
 		{
-			sprintf(texture, "RH_Environment/SoulForest/border_%d.png", rand() % 1);
+			sprintf(texture, "RH_Environment/SoulForest/border_%d.png", rand() % 2);
 			tile->setTexture(texture);
 			break;
 		}
@@ -171,7 +171,7 @@ namespace MGM
 		}
 		case tile::box:
 		{
-			sprintf(texture, "RH_Environment/SoulForest/border_%d.png", rand() % 1);
+			sprintf(texture, "RH_Environment/SoulForest/box_%d.png", rand() % 1);
 			tile->setTexture(texture);
 			break;
 		}
@@ -185,6 +185,28 @@ namespace MGM
 		}
 		}
 		return tile;
+	}
+
+	//instantiate map | 实例化地图
+	Node* Cmap::MapInstantiate(int layer)
+		///Instantiate a layer of the map; 'layer' -1 = background, 0 = physics, 1 = foreground
+		///实例化地图的某一层；'layer' -1=背景，0=物理，1=前景
+	{
+		Node* envi = Node::create();
+		for (unsigned int vcot = 0; vcot <= GetSize().front() + 1; vcot++)
+			for (unsigned int rev_hcot = 0; rev_hcot <= GetSize().back() + 1; rev_hcot++)
+			{
+				Sprite* temp;
+				switch (layer)
+				{
+				case -1: temp = BackInstantiate(vcot, GetSize().back() + 1 - rev_hcot); break;
+				case 0: temp = TileInstantiate(vcot, GetSize().back() + 1 - rev_hcot); break;
+				case 1: temp = ForeInstantiate(vcot, GetSize().back() + 1 - rev_hcot); break;
+				default: temp = nullptr; break;
+				}
+				if (temp != nullptr) envi->addChild(temp);
+			}
+		return envi;
 	}
 }
 

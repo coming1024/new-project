@@ -2,8 +2,8 @@
 
 /*
 	Program MapGenCocos µØÍ¼Éú³ÉCocos°æ
-	File version alpha 0.5
-	TC202006192028
+	File version alpha 0.6
+	TC202006201012
 	ERR=ETH (P.Q.)
 */
 
@@ -27,7 +27,7 @@ namespace MGM
 		Sprite* BackInstantiate(unsigned int cvt, unsigned int chr);
 		Sprite* TileInstantiate(unsigned int cvt, unsigned int chr);
 		Sprite* ForeInstantiate(unsigned int cvt, unsigned int chr);
-
+		Node* MapInstantiate(int layer);
 	};
 
 }

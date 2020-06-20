@@ -2,8 +2,8 @@
 
 /*
 	Program LevelEnv ¹Ø¿¨³¡¾°
-	File version alpha 0.3
-	TC202006192221
+	File version alpha 0.4
+	TC202006201042
 	ERR=ETH (P.Q.)
 */
 
@@ -20,7 +20,6 @@ private:
 	cocos2d::Vec2 Origin;
 	const char* Audio;
 	const char* AudioSwitch;
-	Node* MapInstantiate(MGM::Cmap &map);
 public:
 	LevelEnv();
 	~LevelEnv();

@@ -2,8 +2,8 @@
 
 /*
 	Program LevelEnv 关卡场景
-	File version alpha 0.3
-	TC202006192221
+	File version alpha 0.4
+	TC202006201042
 	ERR=ETH (P.Q.)
 */
 
@@ -57,8 +57,24 @@ bool LevelEnv::init()
 	//				|	|	|	|	|	|
 	MGM::Cmap PtMap(36, 50);
 	if (!PtMap.GenerateMap(1, 3, 200, 100)); //false：未成功生成地图
-	Node* RlMap = MapInstantiate(PtMap); //这是整个地图
-	RlMap->setScale(0.25);
+	Vec2 manchor = Vec2(100, VisibleSize.height - 100); //地图左上角锚点
+	double mscale = 0.25; //地图缩放
+	Node* BackGround = PtMap.MapInstantiate(-1); //地图背景
+	BackGround->setPosition(manchor);
+	BackGround->setScale(mscale);
+	addChild(BackGround, -1);
+	Node* Physic = PtMap.MapInstantiate(0); //地图物理
+	Physic->setPosition(manchor);
+	Physic->setScale(mscale);
+	addChild(Physic, 0);
+	Node* Foreground = PtMap.MapInstantiate(1); //地图前景
+	Foreground->setPosition(manchor);
+	Foreground->setScale(mscale);
+	addChild(Foreground, 2);
+
+
+	//人物的zorder设置成1
+
 
 #pragma warning(suppress:4996) //shut up
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic(AudioSwitch, true);
@@ -73,28 +89,6 @@ bool LevelEnv::init()
 	*/
 
 	return true;
-}
-
-Node* LevelEnv::MapInstantiate(MGM::Cmap &map)
-{//将原型地图实例化
-	auto EnvNode = Node::create();
-	EnvNode->setScale(0.25); //地图缩放，目前调试用，正式使用可另外放大
-	EnvNode->setPosition(Vec2(100, VisibleSize.height - 100)); //初始位置
-	for (unsigned int vcot = 0; vcot <= map.GetSize().front() + 1; vcot++)
-		for (unsigned int rev_hcot = 0; rev_hcot <= map.GetSize().back() + 1; rev_hcot++)
-		{
-			Sprite* bprite = map.BackInstantiate(vcot, map.GetSize().back() + 1 - rev_hcot);
-			if (bprite != nullptr)
-				EnvNode->addChild(bprite, -1);
-			Sprite* aprite = map.TileInstantiate(vcot, map.GetSize().back() + 1 - rev_hcot);
-			if (aprite != nullptr)
-				EnvNode->addChild(aprite, 0);
-			Sprite* fprite = map.ForeInstantiate(vcot, map.GetSize().back() + 1 - rev_hcot);
-			if (fprite != nullptr)
-				EnvNode->addChild(fprite, 2);
-		}
-	addChild(EnvNode);
-	return EnvNode;
 }
 
 /*
