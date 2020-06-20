@@ -78,7 +78,7 @@ bool SettingScene::init()
     auto BGMOnOff = MenuItemImage::create("MusicNormal.png",
         "MusicSelected.png",
         CC_CALLBACK_1(SettingScene::BGMControl, this));
-    BGMOnOff->setPosition(Vec2(0.5 * VisibleSize.width, 0.6 * VisibleSize.height));
+    BGMOnOff->setPosition(Vec2(0.5 * VisibleSize.width, 0.55 * VisibleSize.height));
     
     auto MusicSlider = ControlSlider::create("MusicSlide1.png", "MusicSlide2.png", "sliderThumb.png");
     MusicSlider->setPosition(Vec2(VisibleSize.width*0.5,VisibleSize.height*0.5));

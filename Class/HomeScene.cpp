@@ -113,7 +113,7 @@ bool HomeScene::init()
 
     //////////////////////////////////////////////////
     //¿ªÊ¼ÓÎÏ·
-    auto START = MenuItemLabel::create(Label::createWithTTF("START GAME", "fonts/Marker Felt.ttf", 24),
+    auto START = MenuItemLabel::create(Label::createWithTTF("START GAME", "fonts/Marker Felt.ttf", 48),
                             CC_CALLBACK_1(HomeScene::GoToHerosHome, this));
 
     if (START == nullptr ||

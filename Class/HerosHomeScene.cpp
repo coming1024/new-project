@@ -56,8 +56,8 @@ bool HerosHome::init()
         this->addChild(BackGroundPicture, 0);
     }
 
-    auto SceneName = Label::createWithTTF("Heroes'home", "fonts/Marker Felt.ttf", 40);
-    SceneName->setPosition(Vec2(VisibleSize.width * 0.5, VisibleSize.height * 0.93));
+    auto SceneName = Label::createWithTTF("Heroes'home", "fonts/Marker Felt.ttf", 60);
+    SceneName->setPosition(Vec2(VisibleSize.width * 0.5, VisibleSize.height * 0.95));
     this->addChild(SceneName, 1);
     //返回键
     auto CloseItem = MenuItemImage::create("returnNormal.png",
@@ -72,7 +72,7 @@ bool HerosHome::init()
     Infomation->setPosition(Vec2(0.25 * VisibleSize.width, 0.61 * VisibleSize.height));
 
     //开始游戏
-    auto StartBTN = MenuItemLabel::create(Label::createWithTTF("START", "fonts/Marker Felt.ttf", 24),
+    auto StartBTN = MenuItemLabel::create(Label::createWithTTF("START", "fonts/Marker Felt.ttf", 60),
         CC_CALLBACK_1(HerosHome::GoToGameScene, this));
 
     if (StartBTN == nullptr ||
@@ -83,8 +83,8 @@ bool HerosHome::init()
     }
     else
     {
-        StartBTN->setColor(Color3B(210, 105, 30));
-        StartBTN->setPosition(Vec2(VisibleSize.width * 0.5, VisibleSize.height * 0.7));
+        StartBTN->setColor(Color3B(255, 255, 255));
+        StartBTN->setPosition(Vec2(VisibleSize.width * 0.5, VisibleSize.height * 0.8));
     }
 
     auto menu1 = Menu::create(Infomation,CloseItem, StartBTN, NULL);
