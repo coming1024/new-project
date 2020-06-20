@@ -61,7 +61,7 @@ private:
 	CCSprite* m_MonsterImage;//怪物精灵
 	char* Monster_name;//用来保存初始状态的精灵图片名称
 	HealthPoint* Monster_xue;//怪物血条
-	CCNode* my_hero;//当前英雄
+	qishi* my_hero;//当前英雄
 	CCNode* my_map;//当前地图
 	float   dis;//当前怪物和英雄的距离
 
