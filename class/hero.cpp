@@ -81,7 +81,7 @@ void hero::setCurrentLifeNum(int num)
 }
 void hero::addCurrentLifeNum(int num)
 {
-	if ((this->_CurrentlifeNum += num) > this->_totalLifeNum)
+	if ((this->_CurrentlifeNum + num) > this->_totalLifeNum)
 	{
 		this->_CurrentlifeNum = this->_totalLifeNum;
 	}
@@ -149,7 +149,7 @@ void hero::setCurrentDefence(int num)
 }
 void hero::addCurrentDefence(int num)
 {
-	if ((this->_currentDefence += num) > this->_totalDefence)
+	if ((this->_currentDefence + num) > this->_totalDefence)
 	{
 		this->_currentDefence = this->_totalDefence;
 	}
