@@ -43,7 +43,7 @@ namespace MGM
 		Gmap(unsigned int svt, unsigned int shr);
 		Gmap(Gmap& clone);
 		~Gmap();
-		vector<unsigned int> Gmap::GetSize(void);
+		vector<unsigned int> GetSize(void);
 		tile GetTile(unsigned int cvt, unsigned int chr);
 		tile SetTile(unsigned int cvt, unsigned int chr, tile tl);
 		void GenInit(void);
