@@ -8,7 +8,7 @@
 */
 
 #include "MapGenMerge.h"
-#include "GaussRand.cpp" ///我也不知道为什么这里用.h会出错，总之.cpp没问题，就先这样放着了|p.s.这东西也不能丢到头文件里，淦
+#include "GaussRand.h" ///我也不知道为什么这里用.h会出错，总之.cpp没问题，就先这样放着了|p.s.这东西也不能丢到头文件里，淦
 
 namespace MGM
 {
@@ -272,7 +272,7 @@ namespace MGM
 		///Generate 'tile' randomly in 'mode' mode, with the argument 'range', failed generation returns false; 'mode' 0 = random, 1 = center, 2=corner
 		///以'mode'模式随机生成方块'tile'，参数为'range'，生成失败返回false；'mode' 0=平均随机，1=中心正态分布，2=角落正态分布
 	{
-		vector<vector<unsigned int>> *Cord_List;
+		vector<vector<unsigned int>>* Cord_List;
 		switch (tl)
 		{
 		case tile::border:
