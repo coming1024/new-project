@@ -2,8 +2,8 @@
 
 /*
 	Program MapGen 地图生成合并版
-	File version alpha 0.4
-	TC202006191530
+	File version alpha 0.5
+	TC202006192028
 	ERR=ETH (P.Q.)
 */
 
@@ -41,7 +41,9 @@ namespace MGM
 		vector<unsigned int> RandCoord(void);
 	public:
 		Gmap(unsigned int svt, unsigned int shr);
+		Gmap(Gmap& clone);
 		~Gmap();
+		vector<unsigned int> Gmap::GetSize(void);
 		tile GetTile(unsigned int cvt, unsigned int chr);
 		tile SetTile(unsigned int cvt, unsigned int chr, tile tl);
 		void GenInit(void);
