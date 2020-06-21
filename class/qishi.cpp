@@ -5,11 +5,17 @@ qishi* qishi::create(SpriteFrameCache* cache, char* s)
     Size visibleSize = Director::sharedDirector()->getVisibleSize();
     if (player && player->initWithSpriteFrame(cache->spriteFrameByName(s)))
     {
+        player->setWalkFalse();
         player->_leftOrRight = 0;
-        player->setLifeNum(5);
+        player->setCurrentLifeNum(6);
+        player->setTotalLifeNum(6);
+        player->setCurrentEnergy(10);
+        player->setTotalEnergy(10);
         player->setDeath(false);
+        player->setCurrentDefence(6);
+        player->setTotalDefence(6);
         //普攻
-        player->_commonATK = 2;
+        player->setATK(2);
         auto equipmentCache = SpriteFrameCache::sharedSpriteFrameCache();
         equipmentCache->addSpriteFramesWithFile("weapon.plist");
         //子弹
@@ -25,12 +31,10 @@ qishi* qishi::create(SpriteFrameCache* cache, char* s)
             framejzxfw = equipmentCache->getSpriteFrameByName(String::createWithFormat("jzxfw%d.png", i)->getCString());
             vector_frame_jzxfw.pushBack(framejzxfw);
         }
-
-        player->equipmentOne = equipment::create(2, 3, 1,0, equipmentCache, "gjz.png", bullet);
-        player->equipmentTwo = equipment::create(3, 3, 0,0, equipmentCache, "jzxfw0.png", vector_frame_jzxfw,25,player->getContentSize().height);
-
+        //初始装备设置
+        player->equipmentOne = equipment::create(2, 3, 1, 0, equipmentCache, "gjz.png", bullet);
+        player->equipmentTwo = equipment::create(3, 5, 0, 0, equipmentCache, "jzxfw0.png", vector_frame_jzxfw, 25, player->getContentSize().height);
         player->nowEquipment = player->equipmentOne;
-
         if (player->equipmentOne->getParent() == nullptr)
         {
             player->addChild(player->equipmentOne, 2);
@@ -39,9 +43,41 @@ qishi* qishi::create(SpriteFrameCache* cache, char* s)
         {
             player->addChild(player->equipmentTwo, 2);
         }
-
         auto fadeout = FadeOut::create(0.01f);
         player->equipmentTwo->runAction(fadeout);
+        //血条设置
+        player->spriteBar1 = Sprite::create("bar.png");
+        player->addChild(player->spriteBar1);
+        player->spriteBar1->setPosition(player->getPosition().x + player->getContentSize().width / 2, player->getContentSize().height + 16);
+        player->spriteBlood = Sprite::create("blood.png");
+        player->bloodProgress = ProgressTimer::create(player->spriteBlood);
+        player->bloodProgress->setType(ProgressTimer::Type::BAR);
+        player->bloodProgress->setPosition(player->getPosition().x + player->getContentSize().width / 2, player->getContentSize().height + 16);
+        player->bloodProgress->setMidpoint(Point(0, 0.5));
+        player->bloodProgress->setBarChangeRate(Point(1, 0));
+        player->addChild(player->bloodProgress);
+        //蓝条设置
+        player->spriteBar2 = Sprite::create("bar.png");
+        player->addChild(player->spriteBar2);
+        player->spriteBar2->setPosition(player->getPosition().x + player->getContentSize().width / 2, player->getContentSize().height + 8);
+        player->spriteEnergy = Sprite::create("energy.png");
+        player->energyProgress = ProgressTimer::create(player->spriteEnergy);
+        player->energyProgress->setType(ProgressTimer::Type::BAR);
+        player->energyProgress->setPosition(player->getPosition().x + player->getContentSize().width / 2, player->getContentSize().height + 8);
+        player->energyProgress->setMidpoint(Point(0, 0.5));
+        player->energyProgress->setBarChangeRate(Point(1, 0));
+        player->addChild(player->energyProgress);
+        //防御条设置
+        player->spriteBar3 = Sprite::create("bar.png");
+        player->addChild(player->spriteBar3);
+        player->spriteBar3->setPosition(player->getPosition().x + player->getContentSize().width / 2, player->getContentSize().height);
+        player->spriteDefence = Sprite::create("defence.png");
+        player->defenceProgress = ProgressTimer::create(player->spriteDefence);
+        player->defenceProgress->setType(ProgressTimer::Type::BAR);
+        player->defenceProgress->setPosition(player->getPosition().x + player->getContentSize().width / 2, player->getContentSize().height);
+        player->defenceProgress->setMidpoint(Point(0, 0.5));
+        player->defenceProgress->setBarChangeRate(Point(1, 0));
+        player->addChild(player->defenceProgress);
 
         player->autorelease();
         return player;
@@ -85,7 +121,7 @@ bool qishi::heroMove(EventKeyboard::KeyCode keycode, Event* event)
         if (keycode == EventKeyboard::KeyCode::KEY_UP_ARROW || keycode == EventKeyboard::KeyCode::KEY_W)
         {
             float time1 = visibleSize.height - this->getPosition().y;
-            auto moveto_up = MoveTo::create(time1 / 150, Vec2(this->getPosition().x, visibleSize.height));
+            auto moveto_up = MoveTo::create(time1 / 200, Vec2(this->getPosition().x, visibleSize.height));
             this->runAction(rightmove_animate);
             this->runAction(moveto_up->clone());
             _isMoveing = true;
@@ -93,7 +129,7 @@ bool qishi::heroMove(EventKeyboard::KeyCode keycode, Event* event)
         if (keycode == EventKeyboard::KeyCode::KEY_DOWN_ARROW || keycode == EventKeyboard::KeyCode::KEY_S)
         {
             float time2 = this->getPosition().y - origin.y;
-            auto moveto_down = MoveTo::create(time2 / 150, Vec2(this->getPosition().x, origin.y));
+            auto moveto_down = MoveTo::create(time2 / 200, Vec2(this->getPosition().x, origin.y));
             this->runAction(rightmove_animate);
             this->runAction(moveto_down);
             _isMoveing = true;
@@ -101,11 +137,11 @@ bool qishi::heroMove(EventKeyboard::KeyCode keycode, Event* event)
         if (keycode == EventKeyboard::KeyCode::KEY_LEFT_ARROW || keycode == EventKeyboard::KeyCode::KEY_A)
         {
             float time3 = this->getPosition().x - origin.x;
-            auto moveto_left = MoveTo::create(time3 / 150, Vec2(origin.x, this->getPosition().y));
+            auto moveto_left = MoveTo::create(time3 / 200, Vec2(origin.x, this->getPosition().y));
             this->runAction(leftmove_animate);
             this->runAction(moveto_left);
-            this->equipmentOne->setPosition(Vec2(this->getContentSize().width/6, this->getContentSize().height / 2));
-            this->equipmentTwo->setPosition(Vec2(this->getContentSize().width/6, this->getContentSize().height / 2));
+            this->equipmentOne->setPosition(Vec2(this->getContentSize().width / 6, this->getContentSize().height / 2));
+            this->equipmentTwo->setPosition(Vec2(this->getContentSize().width / 6, this->getContentSize().height / 2));
             this->equipmentOne->setFlipX(true);
             this->equipmentTwo->setFlipX(true);
             this->setLeftOrRight(1);
@@ -114,11 +150,11 @@ bool qishi::heroMove(EventKeyboard::KeyCode keycode, Event* event)
         if (keycode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW || keycode == EventKeyboard::KeyCode::KEY_D)
         {
             float time4 = visibleSize.width - this->getPosition().x;
-            auto moveto_right = MoveTo::create(time4 / 150, Vec2(visibleSize.width, this->getPosition().y));
+            auto moveto_right = MoveTo::create(time4 / 200, Vec2(visibleSize.width, this->getPosition().y));
             this->runAction(rightmove_animate);
             this->runAction(moveto_right);
-            this->equipmentTwo->setPosition(Vec2(this->getContentSize().width/1.25 , this->getContentSize().height / 2));
-            this->equipmentOne->setPosition(Vec2(this->getContentSize().width/1.25 , this->getContentSize().height / 2));
+            this->equipmentTwo->setPosition(Vec2(this->getContentSize().width / 1.25, this->getContentSize().height / 2));
+            this->equipmentOne->setPosition(Vec2(this->getContentSize().width / 1.25, this->getContentSize().height / 2));
             this->equipmentOne->setFlipX(false);
             this->equipmentTwo->setFlipX(false);
             this->setLeftOrRight(0);
@@ -138,26 +174,27 @@ bool qishi::commonAttack(Touch* tTouch, Event* eEvent)
     //近战
     if (nowEquipment->getType() == 0)
     {
+        //关键在于设置 在攻击
         this->setIsUsingWeapon(true);
-        nowEquipment->setTag(0);
         auto jz_animation = Animation::createWithSpriteFrames(this->nowEquipment->vector_frame);
-        jz_animation->setDelayPerUnit(0.2f);
+        jz_animation->setDelayPerUnit(float(1) / float(nowEquipment->getSpeed()));
         jz_animation->setLoops(-1);
         auto animate = Animate::create(jz_animation);
         nowEquipment->runAction(animate);
     }
     //远程攻击
-    if (nowEquipment->getType() == 1)
+    if (nowEquipment->getType() == 1 && this->getCurrentEnergy() >= 0)
     {
+        this->reduceCurrentEnergy(1);
         auto visibleSize = Director::getInstance()->getVisibleSize();
         auto touchLocation = tTouch->getLocationInView();
         touchLocation = Director::getInstance()->convertToGL(touchLocation);
         //确定射箭方向
         auto shootdir = touchLocation - this->getPosition();
         auto normalizeddir = ccpNormalize(shootdir);
-        auto overshootdir = normalizeddir * 1000;
+        auto overshootdir = normalizeddir * 2500;
         auto offscreenpoint = this->getPosition() + overshootdir;
-        float moveduration = 9 / this->nowEquipment->getSpeed();
+        float moveduration = 13.5 / this->nowEquipment->getSpeed();
         auto moveTo = MoveTo::create(moveduration, offscreenpoint);
         //箭的角度旋转
         float angleRadians = atanf((float)shootdir.y / (float)shootdir.x);
@@ -206,16 +243,7 @@ bool qishi::stopcommonAttack(Touch* tTouch, Event* eEvent)
     }
     return true;
 }
-
-bool qishi::take_buff(Buff* buff)
-{
-    return true;
-}
-bool qishi::clear_buff()
-{
-    return true;
-}
-void qishi::setfalse()
+void qishi::setWalkFalse()
 {
     _isMoveing = false;
 }

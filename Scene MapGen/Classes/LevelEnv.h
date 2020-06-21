@@ -1,7 +1,7 @@
 #if true
 
 /*
-	Program LevelEnv 关卡场景(合并)
+	Program LevelEnv 鍏冲崱鍦烘櫙(鍚堝苟)
 	File version alpha 0.51
 	TC202006210106
 	ERR=ETH (P.Q.)
@@ -63,7 +63,7 @@ public:
 };
 
 /*
-	Program LevelEnv 关卡场景
+	Program LevelEnv 鍏冲崱鍦烘櫙
 	End
 */
 

@@ -1,10 +1,10 @@
 #if true
 
 /*
-    Header GaussRand 正态分布随机
-    File version 1
-    TC202006171426
-    https://www.cnblogs.com/yeahgis/archive/2012/07/13/2590485.html
+	Header GaussRand 正态分布随机
+	File version 1
+	TC202006171426
+	https://www.cnblogs.com/yeahgis/archive/2012/07/13/2590485.html
 */
 
 #include "GaussRand.h"
@@ -39,8 +39,8 @@ namespace MGM
 }
 
 /*
-    Header GaussRand 正态分布随机
-    End
+	Header GaussRand 正态分布随机
+	End
 */
 
 #endif

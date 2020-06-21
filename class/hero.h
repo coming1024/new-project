@@ -4,7 +4,6 @@
 #include<iostream>
 #include"cocos2d.h"
 #include<vector>
-#include"buff.h"
 #include"equipment.h"
 USING_NS_CC;
 class hero :public cocos2d::Sprite
@@ -18,11 +17,13 @@ public:
 	virtual bool getWeapon(EventKeyboard::KeyCode keycode, Event* event);
 	virtual bool commonAttack(Touch* pTouch, Event* pEvent);
 	virtual bool stopcommonAttack(Touch* pTouch, Event* pEvent);
-	virtual bool take_buff(Buff* buff);
-	virtual bool clear_buff();
-
-	virtual int getLifeNum();
-	virtual bool setLifeNum(int);
+	virtual int getCurrentLifeNum();
+	virtual void setCurrentLifeNum(int);
+	virtual void addCurrentLifeNum(int);
+	virtual int getTotalLifeNum();
+	virtual void setTotalLifeNum(int);
+	virtual void addTotalLifeNum(int);
+	virtual void reduceCurrentLifeNum(int);
 
 	virtual void setDeath(bool);
 	virtual bool getDeath();
@@ -33,10 +34,29 @@ public:
 	virtual void setIsUsingWeapon(bool);
 	virtual bool getIsUsingWeapon();
 
-	virtual void setDefence(int);
-	virtual int getDefence();
+	virtual void setCurrentDefence(int);
+	virtual int getCurrentDefence();
+	virtual void addCurrentDefence(int);
+	virtual int getTotalDefence();
+	virtual void setTotalDefence(int);
+	virtual void reduceCurrentDefence(int);
+
+
+	virtual void setATK(int);
+	virtual int getATK();
+
+	virtual int getCurrentEnergy();
+	virtual void setCurrentEnergy(int);
+	virtual void addCurrentEnergy(int);
+	virtual int getTotalEnergy();
+	virtual void setTotalEnergy(int);
+	virtual void reduceCurrentEnergy(int);
 
 	virtual void takeDamage(int);
+
+	virtual ProgressTimer* getBloodProgress();
+	virtual ProgressTimer* getEnergyProgress();
+	virtual ProgressTimer* getDefenceProgress();
 
 	equipment* equipmentOne;
 	equipment* equipmentTwo;
@@ -44,13 +64,25 @@ public:
 	bool _isMoveing;
 	bool _isDied;
 protected:
-	int _lifeNum;
+	int _CurrentlifeNum;
+	int _totalLifeNum;
 	int _commonATK;//¹¥»÷Á¦
-	int _defence;
-	Vector<Buff*> _allbuffs;
+	int _currentDefence;
+	int _totalDefence;
+	int _currentEnergy;
+	int _totalEnergy;
 	int type;
 	bool _isUsingWeapon;
 	bool _leftOrRight;
+	Sprite* spriteBar1;
+	Sprite* spriteBar2;
+	Sprite* spriteBar3;
+	Sprite* spriteBlood;
+	Sprite* spriteEnergy;
+	Sprite* spriteDefence;
+	ProgressTimer* bloodProgress;
+	ProgressTimer* energyProgress;
+	ProgressTimer* defenceProgress;
 
 };
 #endif

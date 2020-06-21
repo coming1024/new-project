@@ -6,6 +6,8 @@
 
 #include "HealthPoint.h"
 
+#include "qishi.h"
+
 USING_NS_CC;
 
 class Monster :public cocos2d::CCNode
@@ -57,34 +59,77 @@ public:
 	//英雄运动的方向
 
 	bool MonsterDirecton;
+
 	//在可视范围内，怪物跟随英雄运动
-	void FollowRun(CCNode* m_hero,CCNode* m_map);
+
+	void FollowRun(qishi* m_hero,Node*m_map);
+
 	//判断是否攻击
+
 	void JudegeAttack();
+
 	//怪物巡逻路线
+
 	void MonsterSeeRun();
- 
+
 	//怪物启动监听英雄
-	void StartListen(CCNode* m_hero,CCNode* m_map);
+
+	void StartListen(qishi* m_hero,Node*m_map);
+
 	//监听函数,每隔3秒检测下，计算英雄与怪物的距离
+
 	void updateMonster(float delta);
+
 	//更新函数，如果英雄在可视范围内，不断触发
+
 	void update(float delta);
+
+	//受伤动画
+
+	void HurtAnimation(const char* name_each, const unsigned int num, bool run_directon);
+
+	//受伤动画结束
+
+	void HurtEnd();
+
+	//判断是否在受伤动画
+
+	bool IsHurt;
+
+	//死亡动画
+
+	void DeadAnimation(const char* name_each, const unsigned int num, bool run_directon);
+
+	//死亡动画结束
+
+	void DeadEnd();
+
+	//判断是否死亡
+
+	bool Isdead;
+
+	//怪物死亡闪烁结束
+
+	void BlinkEnd();
+
+
 
 	CREATE_FUNC(Monster);
 
+
+
 private:
 
-	CCSprite* m_MonsterImage;//怪物精灵
+     CCSprite* m_MonsterImage;//怪物精灵
 
-	char* Monster_name;//用来保存初始状态的怪物图片名称
+	char* Monster_name;//用来保存初始状态的精灵图片名称
 
 	HealthPoint* Monster_xue;//怪物血条
-	
-	CCNode* my_hero;//当前英雄
-	
-	CCNode* my_map;//当前地图
-	
+
+	qishi* my_hero;//当前英雄
+
+	Node* my_map;//当前地图
+
 	float   dis;//当前怪物和英雄的距离
 
 

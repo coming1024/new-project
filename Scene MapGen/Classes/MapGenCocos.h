@@ -1,7 +1,8 @@
+ï»¿
 #if true
 
 /*
-	Program MapGenCocos µØÍ¼Éú³ÉCocos°æ
+	Program MapGenCocos ÂµÃ˜ÃÂ¼Ã‰ÃºÂ³Ã‰CocosÂ°Ã¦
 	File version alpha 0.6
 	TC202006201012
 	ERR=ETH (P.Q.)
@@ -33,7 +34,7 @@ namespace MGM
 }
 
 /*
-	Program MapGenCocos µØÍ¼Éú³ÉCocos°æ
+	Program MapGenCocos ÂµÃ˜ÃÂ¼Ã‰ÃºÂ³Ã‰CocosÂ°Ã¦
 	End
 */
 

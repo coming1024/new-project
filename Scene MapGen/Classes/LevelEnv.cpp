@@ -1,7 +1,7 @@
 #if true
 
 /*
-	Program LevelEnv ¹Ø¿¨³¡¾°(ºÏ²¢)
+	Program LevelEnv å…³å¡åœºæ™¯(åˆå¹¶)
 	File version alpha 0.51
 	TC202006210106
 	ERR=ETH (P.Q.)
@@ -18,8 +18,8 @@ LevelEnv::LevelEnv()
 {
 	VisibleSize = Director::getInstance()->getVisibleSize();
 	Origin = Director::getInstance()->getVisibleOrigin();
-	Audio = "RH_SRYAudio/Astrodophin.mp3"; //sryµÄ»¬»ü
-	AudioSwitch = "RH_SRYAudio/EMBER_GeometryDash_(WPerShi Remix).mp3"; //sryµÄÁ¦Á¿
+	Audio = "RH_SRYAudio/Astrodophin.mp3"; //sryçš„æ»‘ç¨½
+	AudioSwitch = "RH_SRYAudio/EMBER_GeometryDash_(WPerShi Remix).mp3"; //sryçš„åŠ›é‡
 	GlobalMap = nullptr;
 }
 
@@ -37,14 +37,14 @@ bool LevelEnv::init()
 {
 	if (!Scene::init()) return false;
 
-	srand((unsigned int)time(NULL)); //³õÊ¼»¯Ëæ»úÊıÖÖ×Ó
+	srand((unsigned int)time(NULL)); //åˆå§‹åŒ–éšæœºæ•°ç§å­
 
-	auto title = Label::createWithTTF("Level Environment Preview", "fonts/Marker Felt.ttf", 24); //±êÌâ£¬²âÊÔÓÃ
+	auto title = Label::createWithTTF("Level Environment Preview", "fonts/Marker Felt.ttf", 24); //æ ‡é¢˜ï¼Œæµ‹è¯•ç”¨
 	title->setPosition(Vec2(Origin.x + VisibleSize.width / 2, Origin.y + VisibleSize.height - title->getContentSize().height));
 	title->enableGlow(Color4B::BLUE);
 	this->addChild(title);
 	
-	auto closeItem = MenuItemImage::create( //²âÊÔ°´Å¥
+	auto closeItem = MenuItemImage::create( //æµ‹è¯•æŒ‰é’®
 		"CloseNormal.png",
 		"CloseSelected.png",
 		CC_CALLBACK_1(LevelEnv::Trigger, this));
@@ -55,7 +55,7 @@ bool LevelEnv::init()
 	menu->setPosition(Vec2::ZERO);
 	this->addChild(menu, 1);
 
-	//ÎïÀíÒıÇæ
+	//ç‰©ç†å¼•æ“
 	initWithPhysics();
 	this->getPhysicsWorld()->setGravity(Vec2(0, 0));
 	auto _PauseLayer = PauseLayer::create();
@@ -66,44 +66,44 @@ bool LevelEnv::init()
 #pragma warning(suppress:4996) //shut up
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic(Audio, true);
 
-	//µØÍ¼¼ÓÔØ
+	//åœ°å›¾åŠ è½½
 	Node* PtMap;
-	PtMap = GenerateEnv(level); //µÚ0¹Ø
+	PtMap = GenerateEnv(level); //ç¬¬0å…³
 	addChild(PtMap, 0);
 
 #pragma warning(suppress:4996) //shut up
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic(AudioSwitch, true);
 
 	/***************************************
-	ÒÔÉÏÊÇÔ­ÄÚÈİ£¨ÓĞ¸Ä¶¯£©       ÒÔÏÂÊÇĞÂÔöÄÚÈİ
-	ÎïÀíÒıÇæ³õÊ¼»¯ÎÒÌáÇ°ÁË£¬·ÅÔÚÉÏÃæ
+	ä»¥ä¸Šæ˜¯åŸå†…å®¹ï¼ˆæœ‰æ”¹åŠ¨ï¼‰       ä»¥ä¸‹æ˜¯æ–°å¢å†…å®¹
+	ç‰©ç†å¼•æ“åˆå§‹åŒ–æˆ‘æå‰äº†ï¼Œæ”¾åœ¨ä¸Šé¢
 	***************************************/
 
 	/***************************************
-	×¢Òâ£¬ÕâÀïµÄPtMapÎÒºóÀ´¸Ä³É·ÅÕû¸öµØÍ¼µÄ½ÚµãÁË
-	ÒªÓÃÔ­À´CmapÀàµÄPtMapµÄ»°¿ÉÒÔÓÃLevelEnvÀàµÄ
-	public¶ÔÏóGlobalMap£¬ÄÇ¸öÊÇÎÒĞÂ¼ÓµÄ£¬
-	ÓÃÆğÀ´ÊÇÒ»ÑùµÄ£»
-	ÎÒ°ÑÏÂÃæÓÃµ½PtMapµÄµØ·½Ìæ»»²¢±ê¼ÇÁË£¬
-	Ìæ»»Ç°µÄ´úÂë·ÅÔÚ×îÏÂ·½ÁË
+	æ³¨æ„ï¼Œè¿™é‡Œçš„PtMapæˆ‘åæ¥æ”¹æˆæ”¾æ•´ä¸ªåœ°å›¾çš„èŠ‚ç‚¹äº†
+	è¦ç”¨åŸæ¥Cmapç±»çš„PtMapçš„è¯å¯ä»¥ç”¨LevelEnvç±»çš„
+	publicå¯¹è±¡GlobalMapï¼Œé‚£ä¸ªæ˜¯æˆ‘æ–°åŠ çš„ï¼Œ
+	ç”¨èµ·æ¥æ˜¯ä¸€æ ·çš„ï¼›
+	æˆ‘æŠŠä¸‹é¢ç”¨åˆ°PtMapçš„åœ°æ–¹æ›¿æ¢å¹¶æ ‡è®°äº†ï¼Œ
+	æ›¿æ¢å‰çš„ä»£ç æ”¾åœ¨æœ€ä¸‹æ–¹äº†
 	***************************************/
 
-	initDate(PtMap); //¹ØÓÚÈËÎïµÄ³õÊ¼»¯È«²¿ÒÆ¶¯µ½LevelEnvSupportµÄinitDate()ÁË
+	initDate(PtMap); //å…³äºäººç‰©çš„åˆå§‹åŒ–å…¨éƒ¨ç§»åŠ¨åˆ°LevelEnvSupportçš„initDate()äº†
 	
 	return true;
 }
 
 Node* LevelEnv::GenerateEnv(int level)
 {
-	unsigned int vtsize; //µØÍ¼´¹Ö±´óĞ¡
-	unsigned int hrsize; //µØÍ¼Ë®Æ½´óĞ¡
-	unsigned int stcont; //µØÍ¼Èë¿Ú¸öÊı
-	unsigned int edcont; //µØÍ¼³ö¿Ú¸öÊı
-	unsigned int obcont; //µØÍ¼ÕÏ°­¸öÊı
-	unsigned int bxcont; //µØÍ¼Ïä×Ó¸öÊı
-	double strang = 0.4; //µØÍ¼Èë¿Ú·¶Î§
-	double edrang = 0.8; //µØÍ¼³ö¿Ú·¶Î§
-	switch (level)//ÔÚÕâÀïĞ´¹Ø¿¨Éú³ÉÉèÖÃ
+	unsigned int vtsize; //åœ°å›¾å‚ç›´å¤§å°
+	unsigned int hrsize; //åœ°å›¾æ°´å¹³å¤§å°
+	unsigned int stcont; //åœ°å›¾å…¥å£ä¸ªæ•°
+	unsigned int edcont; //åœ°å›¾å‡ºå£ä¸ªæ•°
+	unsigned int obcont; //åœ°å›¾éšœç¢ä¸ªæ•°
+	unsigned int bxcont; //åœ°å›¾ç®±å­ä¸ªæ•°
+	double strang = 0.4; //åœ°å›¾å…¥å£èŒƒå›´
+	double edrang = 0.8; //åœ°å›¾å‡ºå£èŒƒå›´
+	switch (level)//åœ¨è¿™é‡Œå†™å…³å¡ç”Ÿæˆè®¾ç½®
 	{
 	case 0:
 		vtsize = 20;
@@ -160,22 +160,22 @@ Node* LevelEnv::GenerateEnv(int level)
 	if (!GlobalMap->GenerateMap(stcont, edcont, obcont,bxcont,strang, edrang))
 		throw "Failed map generation";
 	Node* map = GlobalMap->MapInstantiate();
-	//¶¯Ì¬µ÷ÕûµØÍ¼Ëõ·Å
-	double vtscale = VisibleSize.height / ((double)vtsize * 64); //!64Ê¹ÓÃ
-	double hrscale = VisibleSize.width / ((double)hrsize * 64); //!64Ê¹ÓÃ
+	//åŠ¨æ€è°ƒæ•´åœ°å›¾ç¼©æ”¾
+	double vtscale = VisibleSize.height / ((double)vtsize * 64); //!64ä½¿ç”¨
+	double hrscale = VisibleSize.width / ((double)hrsize * 64); //!64ä½¿ç”¨
 	double scale;
 	if (vtscale < hrscale) scale = vtscale * 0.8;
 	else scale = hrscale * 0.8;
 	map->setScale(scale);
-	//¶¯Ì¬µ÷ÕûµØÍ¼Æ«ÒÆ
-	double vtoffset = VisibleSize.height / 2 + ((double)vtsize * 64 / 2 * scale); //!64Ê¹ÓÃ
-	double hroffset = VisibleSize.width / 2 - ((double)hrsize * 64 / 2 * scale); //!64Ê¹ÓÃ
+	//åŠ¨æ€è°ƒæ•´åœ°å›¾åç§»
+	double vtoffset = VisibleSize.height / 2 + ((double)vtsize * 64 / 2 * scale); //!64ä½¿ç”¨
+	double hroffset = VisibleSize.width / 2 - ((double)hrsize * 64 / 2 * scale); //!64ä½¿ç”¨
 	map->setPositionY(vtoffset-16);
 	map->setPositionX(hroffset-32);
 	return map;
 }
 
-void LevelEnv::Trigger(Ref* pSender) //ÏÂÒ»¹Ø
+void LevelEnv::Trigger(Ref* pSender) //ä¸‹ä¸€å…³
 {
 	//Director::getInstance()->end();
 	level++;
@@ -184,7 +184,7 @@ void LevelEnv::Trigger(Ref* pSender) //ÏÂÒ»¹Ø
 }
 
 /*
-	Program LevelEnv ¹Ø¿¨³¡¾°
+	Program LevelEnv å…³å¡åœºæ™¯
 	End
 */
 
